@@ -241,6 +241,92 @@
             justify-content: center;
             font-size: 24px;
         }
+
+        /* Award Banner Styles */
+        .award-banner {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 140, 0, 0.1) 50%, rgba(255, 215, 0, 0.05) 100%);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .award-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                left: -100%;
+            }
+            100% {
+                left: 100%;
+            }
+        }
+
+        .trophy-glow {
+            filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.5));
+            animation: trophyPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes trophyPulse {
+            0%, 100% {
+                filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.5));
+            }
+            50% {
+                filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8));
+            }
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ffd700;
+            border-radius: 50%;
+            animation: sparkle 2s ease-in-out infinite;
+        }
+
+        .sparkle:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .sparkle:nth-child(2) {
+            top: 30%;
+            right: 15%;
+            animation-delay: 0.5s;
+        }
+
+        .sparkle:nth-child(3) {
+            bottom: 25%;
+            left: 20%;
+            animation-delay: 1s;
+        }
+
+        .sparkle:nth-child(4) {
+            bottom: 20%;
+            right: 10%;
+            animation-delay: 1.5s;
+        }
+
+        @keyframes sparkle {
+            0%, 100% {
+                opacity: 0;
+                transform: scale(0);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
     </style>
 </head>
 <body>
@@ -299,7 +385,6 @@
                         <div class="h-80 bg-zinc-900 rounded-lg mb-4 overflow-hidden relative">
                             <div class="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                              <img src="https://blogger.googleusercontent.com/img/a/AVvXsEhSnsiYlX_cFEtohSjvHgWM2bdEv0LlVYq1EhHV3FzBRGZV7Kw3aX-pFRi-swLq5QhXVzPRIqDp28G26Bsrc-50paItPWdLhqPpA6UcOgJLqhugwQrIswpSZeX7xmoKOZOspvvjEBTVzaGPpqDJ09fswfyq39cPR_tgJg3Hxwtu3bAKBC8HbWFFi7kNJrRO" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-110 group-hover:scale-100" alt="project">
-                            <!-- <img src="https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=1000&auto=format&fit=crop" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-110 group-hover:scale-100" alt="project"> -->
                         </div>
                         <h3 class="text-xl font-bold">NEON ARCHIVE</h3>
                         <p class="text-gray-500 text-sm">3D Interactive Exhibition</p>
@@ -327,6 +412,54 @@
                         </div>
                         <h3 class="text-xl font-bold">ABSTRACT STUDIO</h3>
                         <p class="text-gray-500 text-sm">Brand Identity & Website</p>
+                    </div>
+                </div>
+
+                <!-- Award Banner -->
+                <div class="award-banner rounded-xl p-6 mt-12 relative">
+                    <!-- Sparkle effects -->
+                    <div class="sparkle"></div>
+                    <div class="sparkle"></div>
+                    <div class="sparkle"></div>
+                    <div class="sparkle"></div>
+                    
+                    <div class="flex flex-col md:flex-row items-center justify-between gap-4 relative z-10">
+                        <div class="flex items-center gap-4">
+                            <!-- Trophy Icon -->
+                            <div class="trophy-glow">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffd700" class="w-12 h-12">
+                                    <path fill-rule="evenodd" d="M5.166 2.621v.858c-1.035.148-2.059.33-3.071.543a.75.75 0 00-.584.859 6.753 6.753 0 006.138 5.6 6.73 6.73 0 002.743 1.346A6.707 6.707 0 019.279 15H8.54c-1.036 0-1.875.84-1.875 1.875V19.5h-.75a2.25 2.25 0 00-2.25 2.25c0 .414.336.75.75.75h15.19a.75.75 0 00.75-.75 2.25 2.25 0 00-2.25-2.25h-.75v-2.625c0-1.036-.84-1.875-1.875-1.875h-.739a6.706 6.706 0 01-1.112-3.173 6.73 6.73 0 002.743-1.347 6.753 6.753 0 006.139-5.6.75.75 0 00-.585-.858 47.077 47.077 0 00-3.07-.543V2.62a.75.75 0 00-.658-.744 49.22 49.22 0 00-6.093-.377c-2.063 0-4.096.128-6.093.377a.75.75 0 00-.657.744zm0 2.629c0 1.196.312 2.32.857 3.294A5.266 5.266 0 013.16 5.337a45.6 45.6 0 012.006-.343v.256zm13.5 0v-.256c.674.1 1.343.214 2.006.343a5.265 5.265 0 01-2.863 3.207 6.72 6.72 0 00.857-3.294z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            
+                            <div>
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="text-xs font-bold tracking-widest uppercase" style="color: #ffd700;">🏆 Contest Winner</span>
+                                </div>
+                                <h3 class="text-lg md:text-xl font-bold text-white">Tripo 3D AI Contest Winner</h3>
+                                <p class="text-gray-400 text-sm">Recognized for excellence in AI-powered 3D creation</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-3">
+                            <div class="text-center md:text-right">
+                                <div class="flex items-center gap-2 justify-center md:justify-end">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffd700" class="w-4 h-4">
+                                        <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+                                    </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffd700" class="w-4 h-4">
+                                        <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+                                    </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffd700" class="w-4 h-4">
+                                        <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                                <span class="text-xs text-gray-500">2024</span>
+                            </div>
+                            <a href="#" class="px-4 py-2 text-xs font-bold uppercase tracking-widest rounded-lg transition-all duration-300 hover:scale-105" style="background: linear-gradient(135deg, #ffd700, #ff8c00); color: #000;">
+                                View Project
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -514,6 +647,7 @@
                         <div>
                             <span class="text-xs font-bold tracking-widest text-gray-500 uppercase">Recognition</span>
                             <ul class="mt-2 space-y-2 text-gray-400">
+                                <li>🏆 Tripo 3D AI Contest Winner (2024)</li>
                                 <li>Awwwards - SOTD (2023)</li>
                                 <li>FWA - Site of the Month</li>
                                 <li>CSS Design Awards - Innovation</li>
@@ -913,6 +1047,19 @@
                 duration: 1,
                 ease: "power3.out"
             });
+        });
+
+        // Award banner animation
+        gsap.from('.award-banner', {
+            scrollTrigger: {
+                trigger: '.award-banner',
+                start: "top bottom-=50px",
+                toggleActions: "play none none reverse"
+            },
+            opacity: 0,
+            scale: 0.95,
+            duration: 1,
+            ease: "power3.out"
         });
 
         // Skill bar animations
