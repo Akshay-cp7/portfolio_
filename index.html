@@ -240,13 +240,26 @@
             border-radius: 50%;
         }
 
-        .service-icon {
-            width: 48px;
-            height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
+        /* Service Card Image Container */
+        .service-image-container {
+            width: 100%;
+            height: 160px;
+            overflow: hidden;
+            border-radius: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: all 0.5s ease;
+        }
+
+        @media (hover: hover) and (pointer: fine) {
+            .service-card:hover .service-image {
+                transform: scale(1.1);
+            }
         }
 
         /* Project Card Image Container */
@@ -525,61 +538,49 @@
                 <p class="text-gray-400 text-lg mb-12 max-w-2xl">Specialized solutions tailored to bring your digital vision to life with cutting-edge technology and creative excellence.</p>
                 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="glass p-8 group hover:bg-white/5 transition-all duration-500">
-                        <div class="service-icon glass mb-6">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z" />
-                            </svg>
+                    <div class="glass p-6 service-card group hover:bg-white/5 transition-all duration-500 overflow-hidden">
+                        <div class="service-image-container">
+                            <img src="https://blogger.googleusercontent.com/img/a/AVvXsEiPjQNNlQC5DwMbOOyS1Em8wQqEItYWEF_IJla8UO1feLwryzG63uXfX7U3Y9hngiDHDZnVxzQX6g1D3WOYRmHLcXtqcOHYiJWLpbvyub3Z58sxhlGxAjeMPF6ODCxLlH7X5H6zWsI25B5EqqWCsGFfSVhKUY-TX37udk88K3ZiWBJ1lOn6J0OFYCiJI0Oo" alt="Web Development" class="service-image">
                         </div>
                         <h3 class="text-xl font-bold mb-3">Web Development</h3>
                         <p class="text-gray-400 text-sm leading-relaxed">Full-stack development with modern frameworks. From responsive landing pages to complex web applications.</p>
                     </div>
                     
-                    <div class="glass p-8 group hover:bg-white/5 transition-all duration-500">
-                        <div class="service-icon glass mb-6">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
-                            </svg>
+                    <div class="glass p-6 service-card group hover:bg-white/5 transition-all duration-500 overflow-hidden">
+                        <div class="service-image-container">
+                            <img src="https://blogger.googleusercontent.com/img/a/AVvXsEjTfkSSSHsALb4ds528eiOffyNYPuMUSKi2XGvmKZzyluLD_OmLxZHj-7HlKlKTG3sK1zri_3n1CCABJD0Ar9OMzBEXkps3S2N6R0ET8kh_tmtWXdszWVxFRg9LsA94TI6-qKdlI49PQsMtsJ8pEN8fufRbLmr7Fn9dHgmojfICf9evHKEq2euQJWHuOaO9" alt="3D & WebGL" class="service-image">
                         </div>
                         <h3 class="text-xl font-bold mb-3">3D & WebGL</h3>
                         <p class="text-gray-400 text-sm leading-relaxed">Immersive 3D experiences using Three.js and WebGL. Interactive visualizations and virtual environments.</p>
                     </div>
                     
-                    <div class="glass p-8 group hover:bg-white/5 transition-all duration-500">
-                        <div class="service-icon glass mb-6">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42" />
-                            </svg>
+                    <div class="glass p-6 service-card group hover:bg-white/5 transition-all duration-500 overflow-hidden">
+                        <div class="service-image-container">
+                            <img src="https://blogger.googleusercontent.com/img/a/AVvXsEhLNq74ne_dibmT0ijfZPCF73lZjNn8_OqOOtRNdLlXUlvmwSvF28ymPZuAqtAc-yWOHnPlbQq7Axxv-5xVFr3Jed8rheFyxZiPfYZag8bsjX24yotWs-OBDLRmfIhYYhCuVQoRVYX9ai_js3GhFbsTdiIMZ_3HflG7dm_Sm-c3sIda4AQeUXaijZyKtM9n" alt="UI/UX Design" class="service-image">
                         </div>
                         <h3 class="text-xl font-bold mb-3">UI/UX Design</h3>
                         <p class="text-gray-400 text-sm leading-relaxed">User-centered design with focus on aesthetics and usability. Prototyping and design systems.</p>
                     </div>
                     
-                    <div class="glass p-8 group hover:bg-white/5 transition-all duration-500">
-                        <div class="service-icon glass mb-6">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
-                            </svg>
+                    <div class="glass p-6 service-card group hover:bg-white/5 transition-all duration-500 overflow-hidden">
+                        <div class="service-image-container">
+                            <img src="https://blogger.googleusercontent.com/img/a/AVvXsEjfSuiS4rnk-qsUFeWC9SYHiGLwWWnHWpUkKn8aSrZtN7iTOs9updslqXX1vs7FAc7T1whp8JFAU5vrJ34_H036XWdCc5N3xj8FlSd0LHXQonaSWgq3RthBEXIUn9sPVj7aUVrnetmEgUAPmJRHhsJb6aLczOlx7Z7DMOHqvT7lC_bdTaR3ctBd1Q12thu5" alt="Performance Optimization" class="service-image">
                         </div>
                         <h3 class="text-xl font-bold mb-3">Performance Optimization</h3>
                         <p class="text-gray-400 text-sm leading-relaxed">Speed up your existing applications. Core Web Vitals optimization and code auditing.</p>
                     </div>
                     
-                    <div class="glass p-8 group hover:bg-white/5 transition-all duration-500">
-                        <div class="service-icon glass mb-6">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
-                            </svg>
+                    <div class="glass p-6 service-card group hover:bg-white/5 transition-all duration-500 overflow-hidden">
+                        <div class="service-image-container">
+                            <img src="https://blogger.googleusercontent.com/img/a/AVvXsEiPjQNNlQC5DwMbOOyS1Em8wQqEItYWEF_IJla8UO1feLwryzG63uXfX7U3Y9hngiDHDZnVxzQX6g1D3WOYRmHLcXtqcOHYiJWLpbvyub3Z58sxhlGxAjeMPF6ODCxLlH7X5H6zWsI25B5EqqWCsGFfSVhKUY-TX37udk88K3ZiWBJ1lOn6J0OFYCiJI0Oo" alt="Responsive Design" class="service-image">
                         </div>
                         <h3 class="text-xl font-bold mb-3">Responsive Design</h3>
                         <p class="text-gray-400 text-sm leading-relaxed">Mobile-first approach ensuring seamless experience across all devices and screen sizes.</p>
                     </div>
                     
-                    <div class="glass p-8 group hover:bg-white/5 transition-all duration-500">
-                        <div class="service-icon glass mb-6">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
-                            </svg>
+                    <div class="glass p-6 service-card group hover:bg-white/5 transition-all duration-500 overflow-hidden">
+                        <div class="service-image-container">
+                            <img src="https://blogger.googleusercontent.com/img/a/AVvXsEiPjQNNlQC5DwMbOOyS1Em8wQqEItYWEF_IJla8UO1feLwryzG63uXfX7U3Y9hngiDHDZnVxzQX6g1D3WOYRmHLcXtqcOHYiJWLpbvyub3Z58sxhlGxAjeMPF6ODCxLlH7X5H6zWsI25B5EqqWCsGFfSVhKUY-TX37udk88K3ZiWBJ1lOn6J0OFYCiJI0Oo" alt="Creative Animation" class="service-image">
                         </div>
                         <h3 class="text-xl font-bold mb-3">Creative Animation</h3>
                         <p class="text-gray-400 text-sm leading-relaxed">Motion design and micro-interactions that bring interfaces to life using GSAP and CSS animations.</p>
@@ -1151,7 +1152,7 @@
 
         // Cursor scaling on links - only for non-touch devices
         if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
-            document.querySelectorAll('a, button, .group, input, textarea, select').forEach(el => {
+            document.querySelectorAll('a, button, .group, .service-card, input, textarea, select').forEach(el => {
                 el.addEventListener('mouseenter', () => gsap.to('#cursor', { scale: 3, backgroundColor: 'rgba(255,255,255,0.1)' }));
                 el.addEventListener('mouseleave', () => gsap.to('#cursor', { scale: 1, backgroundColor: 'transparent' }));
             });
