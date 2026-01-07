@@ -200,6 +200,13 @@
             transition: transform 0.1s ease;
         }
 
+        /* Hide custom cursor on touch devices */
+        @media (hover: none) and (pointer: coarse) {
+            .custom-cursor {
+                display: none;
+            }
+        }
+
         .skill-bar {
             height: 4px;
             background: rgba(255, 255, 255, 0.1);
@@ -240,6 +247,46 @@
             align-items: center;
             justify-content: center;
             font-size: 24px;
+        }
+
+        /* Project Card Image Container */
+        .project-image-container {
+            height: 200px;
+        }
+
+        @media (min-width: 768px) {
+            .project-image-container {
+                height: 320px;
+            }
+        }
+
+        /* Project Image - No grayscale on mobile */
+        .project-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.7s ease;
+            transform: scale(1.1);
+        }
+
+        /* Only apply grayscale on desktop (hover-capable devices) */
+        @media (hover: hover) and (pointer: fine) {
+            .project-image {
+                filter: grayscale(100%);
+            }
+            
+            .group:hover .project-image {
+                filter: grayscale(0%);
+                transform: scale(1);
+            }
+        }
+
+        /* On touch devices, no grayscale and normal scale */
+        @media (hover: none) and (pointer: coarse) {
+            .project-image {
+                filter: grayscale(0%);
+                transform: scale(1);
+            }
         }
 
         /* Award Banner Styles */
@@ -376,94 +423,100 @@
             </div>
         </section>
 
-        <!-- Work Section -->
-        <section id="work" class="max-w-7xl mx-auto">
-            <div class="w-full">
-                <h2 class="text-5xl font-bold mb-12 text-gradient">Featured.</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div class="glass p-4 group cursor-pointer overflow-hidden">
-                        <div class="h-80 bg-zinc-900 rounded-lg mb-4 overflow-hidden relative">
-                            <div class="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                             <img src="https://blogger.googleusercontent.com/img/a/AVvXsEhSnsiYlX_cFEtohSjvHgWM2bdEv0LlVYq1EhHV3FzBRGZV7Kw3aX-pFRi-swLq5QhXVzPRIqDp28G26Bsrc-50paItPWdLhqPpA6UcOgJLqhugwQrIswpSZeX7xmoKOZOspvvjEBTVzaGPpqDJ09fswfyq39cPR_tgJg3Hxwtu3bAKBC8HbWFFi7kNJrRO" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-110 group-hover:scale-100" alt="project">
-                        </div>
-                        <h3 class="text-xl font-bold">NEON ARCHIVE</h3>
-                        <p class="text-gray-500 text-sm">3D Interactive Exhibition</p>
-                    </div>
-                    <div class="glass p-4 group cursor-pointer overflow-hidden mt-0 md:mt-20">
-                        <div class="h-80 bg-zinc-900 rounded-lg mb-4 overflow-hidden relative">
-                            <div class="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-red-500/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                            <img src="https://blogger.googleusercontent.com/img/a/AVvXsEg7PpBDBnUEYDbLJFFTmq8ew9HQPdSl-uL0itb572NbPn2p83oWYvI6Qpo8lHY-wzL51v9_UTD_kkDjWjmWtQzWRBOdGeGuihOArEco2HKZHHQ6PX0PRjMUPH5gW8pMAxRIVrrrf0pL6m39CjwR-WZJQsx6bA0OfxHK_t2EjPg-WYKK6XrskjAFaERaMXcV" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-110 group-hover:scale-100" alt="project">
-                        </div>
-                        <h3 class="text-xl font-bold">FLUID DYNAMICS</h3>
-                        <p class="text-gray-500 text-sm">Real-time WebGL Simulation</p>
-                    </div>
-                    <div class="glass p-4 group cursor-pointer overflow-hidden">
-                        <div class="h-80 bg-zinc-900 rounded-lg mb-4 overflow-hidden relative">
-                            <div class="absolute inset-0 bg-gradient-to-br from-green-500/20 to-teal-500/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                            <img src="https://blogger.googleusercontent.com/img/a/AVvXsEhMJoYxKwJSXJsHuBbu9uLAo7fYd6NTEieCjIzgROPHcYFXfyHX-jUT76F1ig3QQ5ZjhFr7M7GD0gr_r3zaUx_w3X9SQPOIuZuU3-eAkWqCOh-yodZoGYN_2adaQJYY_wd2mf2dGVr-xwMqs3H_Uy4ofDUmCyvTcA2wcrqkSIBelVLbo5KolhH_rz-dZ31h" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-110 group-hover:scale-100" alt="project">
-                        </div>
-                        <h3 class="text-xl font-bold">RETRO WAVE</h3>
-                        <p class="text-gray-500 text-sm">E-commerce Platform</p>
-                    </div>
-                    <div class="glass p-4 group cursor-pointer overflow-hidden mt-0 md:mt-20">
-                        <div class="h-80 bg-zinc-900 rounded-lg mb-4 overflow-hidden relative">
-                            <div class="absolute inset-0 bg-gradient-to-br from-pink-500/20 to-violet-500/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                            <img src="https://blogger.googleusercontent.com/img/a/AVvXsEhnFP2GxkvAr-FHm6fkaSKalXKP0oJtnqgyVlEJTUzgB_KzjD0klttGWUiQYSHYJcI9tTVh7nwSXLF6j2k9mlguMCx5Brb8dwwS1a-ZU5gnLbc-ubmzQ1oUdtuFlIIB6KcfHiAnLlPGALYUway15fUyZ6f2SLhOg7cULF12RD642awDrPcEumREFSP80R9h" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-110 group-hover:scale-100" alt="project">
-                        </div>
-                        <h3 class="text-xl font-bold">ABSTRACT STUDIO</h3>
-                        <p class="text-gray-500 text-sm">Brand Identity & Website</p>
-                    </div>
-                </div>
+   
+<!-- Work Section -->
 
-                <!-- Award Banner -->
-                <div class="award-banner rounded-xl p-6 mt-12 relative">
-                    <!-- Sparkle effects -->
-                    <div class="sparkle"></div>
-                    <div class="sparkle"></div>
-                    <div class="sparkle"></div>
-                    <div class="sparkle"></div>
-                    
-                    <div class="flex flex-col md:flex-row items-center justify-between gap-4 relative z-10">
-                        <div class="flex items-center gap-4">
-                            <!-- Trophy Icon -->
-                            <div class="trophy-glow">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffd700" class="w-12 h-12">
-                                    <path fill-rule="evenodd" d="M5.166 2.621v.858c-1.035.148-2.059.33-3.071.543a.75.75 0 00-.584.859 6.753 6.753 0 006.138 5.6 6.73 6.73 0 002.743 1.346A6.707 6.707 0 019.279 15H8.54c-1.036 0-1.875.84-1.875 1.875V19.5h-.75a2.25 2.25 0 00-2.25 2.25c0 .414.336.75.75.75h15.19a.75.75 0 00.75-.75 2.25 2.25 0 00-2.25-2.25h-.75v-2.625c0-1.036-.84-1.875-1.875-1.875h-.739a6.706 6.706 0 01-1.112-3.173 6.73 6.73 0 002.743-1.347 6.753 6.753 0 006.139-5.6.75.75 0 00-.585-.858 47.077 47.077 0 00-3.07-.543V2.62a.75.75 0 00-.658-.744 49.22 49.22 0 00-6.093-.377c-2.063 0-4.096.128-6.093.377a.75.75 0 00-.657.744zm0 2.629c0 1.196.312 2.32.857 3.294A5.266 5.266 0 013.16 5.337a45.6 45.6 0 012.006-.343v.256zm13.5 0v-.256c.674.1 1.343.214 2.006.343a5.265 5.265 0 01-2.863 3.207 6.72 6.72 0 00.857-3.294z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                            
-                            <div>
-                                <div class="flex items-center gap-2 mb-1">
-                                    <span class="text-xs font-bold tracking-widest uppercase" style="color: #ffd700;">🏆 Contest Winner</span>
-                                </div>
-                                <h3 class="text-lg md:text-xl font-bold text-white">Tripo 3D AI Contest Winner</h3>
-                                <p class="text-gray-400 text-sm">Recognized for excellence in AI-powered 3D creation</p>
-                            </div>
-                        </div>
-                        
-                        <div class="flex items-center gap-3">
-                            <div class="text-center md:text-right">
-                                <div class="flex items-center gap-2 justify-center md:justify-end">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffd700" class="w-4 h-4">
-                                        <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
-                                    </svg>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffd700" class="w-4 h-4">
-                                        <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
-                                    </svg>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffd700" class="w-4 h-4">
-                                        <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
-                                    </svg>
-                                </div>
-                                <span class="text-xs text-gray-500">2024</span>
-                            </div>
-                            <a href="#" class="px-4 py-2 text-xs font-bold uppercase tracking-widest rounded-lg transition-all duration-300 hover:scale-105" style="background: linear-gradient(135deg, #ffd700, #ff8c00); color: #000;">
-                                View Project
-                            </a>
-                        </div>
-                    </div>
+<section id="work" class="max-w-7xl mx-auto">
+    <div class="w-full">
+        <h2 class="text-5xl font-bold mb-12 text-gradient">Featured.</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="glass p-4 group cursor-pointer overflow-hidden md:mb-20">
+                <div class="project-image-container bg-zinc-900 rounded-lg mb-4 overflow-hidden relative">
+                     <img src="https://blogger.googleusercontent.com/img/a/AVvXsEhSnsiYlX_cFEtohSjvHgWM2bdEv0LlVYq1EhHV3FzBRGZV7Kw3aX-pFRi-swLq5QhXVzPRIqDp28G26Bsrc-50paItPWdLhqPpA6UcOgJLqhugwQrIswpSZeX7xmoKOZOspvvjEBTVzaGPpqDJ09fswfyq39cPR_tgJg3Hxwtu3bAKBC8HbWFFi7kNJrRO" class="project-image" alt="project">
+                </div>
+                <div class="px-2 pb-2">
+                    <h3 class="text-xl font-bold">NEON ARCHIVE</h3>
+                    <p class="text-gray-500 text-sm">3D Interactive Exhibition</p>
                 </div>
             </div>
-        </section>
+            <div class="glass p-4 group cursor-pointer overflow-hidden mt-0 md:mt-20">
+                <div class="project-image-container bg-zinc-900 rounded-lg mb-4 overflow-hidden relative">
+                    <img src="https://blogger.googleusercontent.com/img/a/AVvXsEg7PpBDBnUEYDbLJFFTmq8ew9HQPdSl-uL0itb572NbPn2p83oWYvI6Qpo8lHY-wzL51v9_UTD_kkDjWjmWtQzWRBOdGeGuihOArEco2HKZHHQ6PX0PRjMUPH5gW8pMAxRIVrrrf0pL6m39CjwR-WZJQsx6bA0OfxHK_t2EjPg-WYKK6XrskjAFaERaMXcV" class="project-image" alt="project">
+                </div>
+                <div class="px-2 pb-2">
+                    <h3 class="text-xl font-bold">FLUID DYNAMICS</h3>
+                    <p class="text-gray-500 text-sm">Real-time WebGL Simulation</p>
+                </div>
+            </div>
+            <div class="glass p-4 group cursor-pointer overflow-hidden md:mb-20">
+                <div class="project-image-container bg-zinc-900 rounded-lg mb-4 overflow-hidden relative">
+                    <img src="https://blogger.googleusercontent.com/img/a/AVvXsEhMJoYxKwJSXJsHuBbu9uLAo7fYd6NTEieCjIzgROPHcYFXfyHX-jUT76F1ig3QQ5ZjhFr7M7GD0gr_r3zaUx_w3X9SQPOIuZuU3-eAkWqCOh-yodZoGYN_2adaQJYY_wd2mf2dGVr-xwMqs3H_Uy4ofDUmCyvTcA2wcrqkSIBelVLbo5KolhH_rz-dZ31h" class="project-image" alt="project">
+                </div>
+                <div class="px-2 pb-2">
+                    <h3 class="text-xl font-bold">RETRO WAVE</h3>
+                    <p class="text-gray-500 text-sm">E-commerce Platform</p>
+                </div>
+            </div>
+            <div class="glass p-4 group cursor-pointer overflow-hidden mt-0 md:mt-20">
+                <div class="project-image-container bg-zinc-900 rounded-lg mb-4 overflow-hidden relative">
+                    <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgjj-3tMSAoNmeXcx33xb8puzt5jeMnMXzzS__0qGmMB-QCtIZUaDm1KsGbYyK1FBDJntpe8xXyKMw5EEj3w42m25x0FKAZjV9NvJt0x0bbGzP5_RIdUbBf8iez4Ar0iF0vY1lWNT7E_oSw_TLcdNJyXgeNBOqGbLW52TsZVSQuP4l1_VVi5TdMyYv26MMN" class="project-image" alt="project">
+                </div>
+                <div class="px-2 pb-2">
+                    <h3 class="text-xl font-bold">ABSTRACT STUDIO</h3>
+                    <p class="text-gray-500 text-sm">Brand Identity & Website</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Award Banner -->
+        <div class="award-banner rounded-xl p-6 mt-12 relative">
+            <!-- Sparkle effects -->
+            <div class="sparkle"></div>
+            <div class="sparkle"></div>
+            <div class="sparkle"></div>
+            <div class="sparkle"></div>
+            
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4 relative z-10">
+                <div class="flex items-center gap-4">
+                    <!-- Trophy Icon -->
+                    <div class="trophy-glow">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffd700" class="w-12 h-12">
+                            <path fill-rule="evenodd" d="M5.166 2.621v.858c-1.035.148-2.059.33-3.071.543a.75.75 0 00-.584.859 6.753 6.753 0 006.138 5.6 6.73 6.73 0 002.743 1.346A6.707 6.707 0 019.279 15H8.54c-1.036 0-1.875.84-1.875 1.875V19.5h-.75a2.25 2.25 0 00-2.25 2.25c0 .414.336.75.75.75h15.19a.75.75 0 00.75-.75 2.25 2.25 0 00-2.25-2.25h-.75v-2.625c0-1.036-.84-1.875-1.875-1.875h-.739a6.706 6.706 0 01-1.112-3.173 6.73 6.73 0 002.743-1.347 6.753 6.753 0 006.139-5.6.75.75 0 00-.585-.858 47.077 47.077 0 00-3.07-.543V2.62a.75.75 0 00-.658-.744 49.22 49.22 0 00-6.093-.377c-2.063 0-4.096.128-6.093.377a.75.75 0 00-.657.744zm0 2.629c0 1.196.312 2.32.857 3.294A5.266 5.266 0 013.16 5.337a45.6 45.6 0 012.006-.343v.256zm13.5 0v-.256c.674.1 1.343.214 2.006.343a5.265 5.265 0 01-2.863 3.207 6.72 6.72 0 00.857-3.294z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    
+                    <div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="text-xs font-bold tracking-widest uppercase" style="color: #ffd700;">Global Event</span>
+                        </div>
+                        <h3 class="text-lg md:text-xl font-bold text-white">Tripo 3D AI Contest Winner</h3>
+                        <p class="text-gray-400 text-sm">Event : Boss Fight in Multiverse</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-3">
+                    <div class="text-center md:text-right">
+                        <div class="flex items-center gap-2 justify-center md:justify-end">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffd700" class="w-4 h-4">
+                                <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffd700" class="w-4 h-4">
+                                <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffd700" class="w-4 h-4">
+                                <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <span class="text-xs text-gray-500">June 2025</span>
+                    </div>
+                    <a href="https://www.tripo3d.ai/event/boss-fight-in-multiverse#allSubmissions" target="_blank" class="px-4 py-2 text-xs font-bold uppercase tracking-widest rounded-lg transition-all duration-300 hover:scale-105" style="background: linear-gradient(135deg, #ffd700, #ff8c00); color: #000;">
+                        View Event
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
         <!-- Services Section -->
         <section id="services" class="max-w-7xl mx-auto">
@@ -1096,11 +1149,13 @@
             initThree();
         };
 
-        // Cursor scaling on links
-        document.querySelectorAll('a, button, .group, input, textarea, select').forEach(el => {
-            el.addEventListener('mouseenter', () => gsap.to('#cursor', { scale: 3, backgroundColor: 'rgba(255,255,255,0.1)' }));
-            el.addEventListener('mouseleave', () => gsap.to('#cursor', { scale: 1, backgroundColor: 'transparent' }));
-        });
+        // Cursor scaling on links - only for non-touch devices
+        if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+            document.querySelectorAll('a, button, .group, input, textarea, select').forEach(el => {
+                el.addEventListener('mouseenter', () => gsap.to('#cursor', { scale: 3, backgroundColor: 'rgba(255,255,255,0.1)' }));
+                el.addEventListener('mouseleave', () => gsap.to('#cursor', { scale: 1, backgroundColor: 'transparent' }));
+            });
+        }
 
     </script>
 </body>
