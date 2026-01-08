@@ -40,67 +40,24 @@
             flex-direction: column;
             align-items: center;
             gap: 2rem;
+            text-align: center;
         }
 
-        .loading-logo {
-            font-size: 3.5rem;
-            font-weight: 900;
-            letter-spacing: -0.05em;
-            background: linear-gradient(to right, #fff, #666);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: logoFloat 3s ease-in-out infinite;
-        }
 
-        @keyframes logoFloat {
-            0%, 100% {
-                transform: translateY(0px);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-        }
 
-        .loading-bar-container {
-            width: 200px;
-            height: 3px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 2px;
-            overflow: hidden;
-            position: relative;
-        }
 
-        .loading-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #fff, #666, #fff);
-            background-size: 200% 100%;
-            border-radius: 2px;
-            width: 0%;
-            animation: loadingBarAnimation 2.5s ease-in-out forwards;
-        }
+  
 
-        @keyframes loadingBarAnimation {
-            0% {
-                width: 0%;
-                background-position: 200% 0;
-            }
-            50% {
-                width: 80%;
-                background-position: 0% 0;
-            }
-            100% {
-                width: 100%;
-                background-position: -200% 0;
-            }
-        }
+
 
         .loading-text {
-            font-size: 0.75rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.6);
-            animation: fadeInOut 2.5s ease-in-out;
-        }
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.6);
+    animation: fadeInOut 2.5s ease-in-out;
+    text-align: center; /* ADD THIS */
+}
 
         @keyframes fadeInOut {
             0%, 100% {
@@ -387,17 +344,30 @@
                 transform: scale(1);
             }
         }
-        
+  
+/* ✅ KEEP ONLY THESE */
+@media (max-width: 768px) {
+    .loading-text {
+        font-size: 0.65rem;
+        letter-spacing: 0.15em;
+    }
+    
+    .dot {
+        width: 5px;
+        height: 5px;
+    }
+}
+
     </style>
 </head>
 <body>
     <!-- LOADING SCREEN -->
     <div id="loading-screen">
         <div class="loading-content">
-            <div class="loading-logo">Initializing Thrusters</div>
+            <!-- <div class="loading-logo">Initializing Thrusters</div>
             <div class="loading-bar-container">
                 <div class="loading-bar"></div>
-            </div>
+            </div> -->
             <div class="loading-text">Adjusting to orbit..</div>
             <div class="loading-dots">
                 <div class="dot"></div>
@@ -411,7 +381,7 @@
     <div id="canvas-container"></div>
 
     <nav class="fixed top-0 w-full p-6 flex justify-between items-center z-50">
-        <div class="text-2xl font-black italic tracking-tighter">Akshay C P.</div>
+        <div class="text-2xl font-black italic tracking-tighter">Portfolio.</div>
         <div class="hidden md:flex space-x-8 text-sm uppercase tracking-widest font-medium">
             <a href="#home" class="hover:text-gray-400 transition">Home</a>
             <a href="#work" class="hover:text-gray-400 transition">Work</a>
@@ -427,8 +397,8 @@
         <section id="home" class="flex flex-col justify-center items-start max-w-7xl mx-auto">
             <div class="reveal">
                 <h1 class="font-black leading-none mb-4 text-gradient">
-    <span class="text-4xl md:text-5xl block mb-2">HEY I'M</span>
-    <span class="text-7xl md:text-8xl">AKSHAY C P</span>
+    <span class="text-3xl md:text-6xl block mb-2">HEY I'M</span>
+    <span class="text-5xl md:text-8xl">AKSHAY C P</span>
 </h1>
                 <p class="text-xl md:text-2xl text-gray-400 max-w-xl">I build whatever captures my interest.
 Some ideas turn into products.
@@ -454,7 +424,7 @@ Some annoyances turn into automation.</p>
                 </div>
                 <div class="px-4 pb-1 pt-2">
                     <h3 class="text-xl font-bold">GLB AR Viewer 3D</h3> 
-                    <p class="text-gray-500 text-sm">View and place 3D models in real world space using AR. · Flutter · 3D · AR · GLB</p>
+                    <p class="text-gray-500 text-sm">View and place 3D models in real world space using AR.</p>
                 </div>
             </div>
             <div class="glass p-4 group cursor-pointer overflow-hidden mt-0 md:mt-20">
