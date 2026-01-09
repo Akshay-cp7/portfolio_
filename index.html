@@ -133,9 +133,12 @@
         }
 
         .text-gradient {
-            background: linear-gradient(to right, #fff, #666);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        background: linear-gradient(to right, #fff, #666);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        padding-bottom: 0.15em; /* Adds space for descenders */
+        display: inline-block; /* Required for padding to work properly */
         }
 
         section {
@@ -357,7 +360,254 @@
         height: 5px;
     }
 }
+/* Bento Box Layout */
+.bento-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
 
+@media (min-width: 768px) {
+    .bento-grid {
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: auto auto auto;
+        gap: 1.25rem;
+    }
+}
+
+.bento-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 1.25rem;
+    padding: 1.25rem;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    text-decoration: none;
+    color: inherit;
+}
+
+.bento-item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+@media (hover: hover) {
+    .bento-item:hover {
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(255, 255, 255, 0.15);
+        transform: translateY(-4px);
+    }
+    
+    .bento-item:hover::before {
+        opacity: 1;
+    }
+}
+
+/* Large Featured Item */
+.bento-large {
+    grid-column: 1 / -1;
+    padding: 2rem;
+    flex-direction: column;
+}
+
+@media (min-width: 768px) {
+    .bento-large {
+        grid-column: span 2;
+        grid-row: span 2;
+        padding: 2.5rem;
+    }
+}
+
+.bento-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    flex: 1;
+}
+
+@media (min-width: 768px) {
+    .bento-content {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+}
+
+.bento-icon-large {
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+    .bento-icon-large {
+        width: 120px;
+        height: 120px;
+    }
+}
+
+.bento-icon-large img {
+    width: 100%;
+    height: 100%;
+    border-radius: 24px;
+    object-fit: cover;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    transition: transform 0.4s ease;
+}
+
+@media (hover: hover) {
+    .bento-large:hover .bento-icon-large img {
+        transform: scale(1.05) rotate(-2deg);
+    }
+}
+
+.bento-text {
+    flex: 1;
+}
+
+.bento-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 999px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.75rem;
+}
+
+.bento-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+@media (min-width: 768px) {
+    .bento-title {
+        font-size: 1.75rem;
+    }
+}
+
+.bento-desc {
+    color: rgba(255,255,255,0.6);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.bento-stats {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.5);
+}
+
+.bento-arrow {
+    position: absolute;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 40px;
+    height: 40px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    color: rgba(255,255,255,0.6);
+}
+
+@media (hover: hover) {
+    .bento-large:hover .bento-arrow {
+        background: white;
+        color: black;
+        transform: rotate(45deg);
+    }
+}
+
+/* Small Items */
+.bento-content-small {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+}
+
+.bento-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    object-fit: cover;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+}
+
+@media (hover: hover) {
+    .bento-item:hover .bento-icon {
+        transform: scale(1.1);
+    }
+}
+
+.bento-title-sm {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.15rem;
+}
+
+.bento-cat {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.5);
+}
+
+.bento-arrow-sm {
+    font-size: 1.25rem;
+    color: rgba(255,255,255,0.3);
+    transition: all 0.3s ease;
+    align-self: center;
+}
+
+@media (hover: hover) {
+    .bento-item:hover .bento-arrow-sm {
+        color: white;
+        transform: translateX(4px);
+    }
+}
+
+/* Stats Box */
+.bento-stats-box {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+}
+
+.stats-number {
+    font-size: 3rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #fff 0%, #666 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+}
+
+.stats-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-top: 0.5rem;
+}
+
+.stats-sub {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.4);
+    margin-top: 0.25rem;
+}
     </style>
 </head>
 <body>
@@ -384,7 +634,7 @@
         <div class="text-2xl font-black italic tracking-tighter">Portfolio.</div>
         <div class="hidden md:flex space-x-8 text-sm uppercase tracking-widest font-medium">
             <a href="#home" class="hover:text-gray-400 transition">Home</a>
-            <a href="#work" class="hover:text-gray-400 transition">Work</a>
+            <a href="#highlights" class="hover:text-gray-400 transition">Highlights</a>
             <a href="#services" class="hover:text-gray-400 transition">Services</a>
             <a href="#about" class="hover:text-gray-400 transition">About</a>
             <a href="#experience" class="hover:text-gray-400 transition">Experience</a>
@@ -411,11 +661,11 @@ Some annoyances turn into automation.</p>
         </section>
 
    
-<!-- Work Section -->
+<!-- highlights Section -->
 
-<section id="work" class="max-w-7xl mx-auto">
+<section id="highlights" class="max-w-7xl mx-auto">
     <div class="w-full">
-        <h2 class="text-5xl font-bold mb-12 text-gradient">Selected Works</h2>
+        <h2 class="text-5xl font-bold mb-12 text-gradient">Highlights</h2>
         <!-- <p class="text-gray-400 text-lg mb-12 max-w-2xl">Some of my works on google play.</p> -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div class="glass p-4 group cursor-pointer overflow-hidden md:mb-20">
@@ -497,7 +747,7 @@ Some annoyances turn into automation.</p>
                         </div>
                         <span class="text-xs text-gray-500">June 2025</span>
                     </div>
-                    <a href="https://www.tripo3d.ai/event/boss-fight-in-multiverse#allSubmissions" target="_blank" class="px-4 py-2 text-xs font-bold uppercase tracking-widest rounded-lg transition-all duration-300 hover:scale-105" style="background: linear-gradient(135deg, #ffd700, #ff8c00); color: #000;">
+                    <a href="https://www.tripo3d.ai/event/boss-fight-in-multiverse" target="_blank" class="px-4 py-2 text-xs font-bold uppercase tracking-widest rounded-lg transition-all duration-300 hover:scale-105" style="background: linear-gradient(135deg, #ffd700, #ff8c00); color: #000;">
                         View Event
                     </a>
                 </div>
@@ -505,10 +755,6 @@ Some annoyances turn into automation.</p>
         </div>
     </div>
 </section>
-
-      
-
-
           <!-- Experience Section -->
         <section id="experience" class="max-w-7xl mx-auto">
             <div class="w-full">
@@ -520,7 +766,7 @@ Some annoyances turn into automation.</p>
                         <div class="relative pl-8">
                             <div class="timeline-line"></div>
                             <div class="timeline-dot"></div>
-                            <span class="text-xs font-bold tracking-widest text-gray-500 uppercase">2025 - 2026 - Present</span>
+                            <span class="text-xs font-bold tracking-widest text-gray-500 uppercase">2024 - 2026 - Present</span>
                             <h3 class="text-xl font-bold mt-2">Flutter ERP Developer </h3>
                             <p class="text-gray-400 mt-1">Digital Wing Farook College</p>
                             <p class="text-gray-500 text-sm mt-3 leading-relaxed">Led the development of mobile applications for college academic operations, including attendance marking and mark entry, with seamless integration to the ERP backend APIs.</p>
@@ -657,7 +903,99 @@ Some annoyances turn into automation.</p>
 
 
 
-      
+    <section id="app-showcase" class="max-w-7xl mx-auto py-20 px-4">
+    <div class="w-full">
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
+            <div>
+               
+                <h3 class="text-3xl md:text-5xl font-bold mt-2 text-gradient">More on Google Play</h3>
+            </div>
+            <a href="#" class="mt-4 md:mt-0 text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-2">
+                View all apps
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+            </a>
+        </div>
+        
+        <div class="bento-grid">
+            <!-- Featured Large App -->
+            <a href="#" class="bento-item bento-large group">
+                <div class="bento-content">
+                    <div class="bento-icon-large">
+                        <img src="https://play-lh.googleusercontent.com/ztGUFbX1zTfSflCSls6GgOSEVqSJKhKY2mYpgIzLjVLQKLFWa8OYxXeLldv7zm_ltIg=s256-rw" alt="Featured App">
+                    </div>
+                    <div class="bento-text">
+                        <span class="bento-badge">Featured</span>
+                        <h4 class="bento-title">Bulk Image Cropper</h4>
+                        <p class="bento-desc">Crop thousands of images in a single click.</p>
+                        <!-- <div class="bento-stats">
+                            <span>⭐ 4.8</span>
+                            <span>10K+ Downloads</span>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="bento-arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17L17 7M17 7H7M17 7v10" />
+                    </svg>
+                </div>
+            </a>
+            
+            <!-- Regular Apps -->
+            <a href="#" class="bento-item group">
+                <div class="bento-content-small">
+                    <img src="https://play-lh.googleusercontent.com/kXHpGqSh-hXCzvGEvo74h4NowVQmL-3sfxDX-Bj59FYRbpr14l-k1pspge_C88oSHA=s256-rw" alt="App" class="bento-icon">
+                    <div>
+                        <h4 class="bento-title-sm">IMGAC</h4>
+                        <p class="bento-cat">Utilities</p>
+                    </div>
+                </div>
+                <span class="bento-arrow-sm">→</span>
+            </a>
+            
+            <a href="#" class="bento-item group">
+                <div class="bento-content-small">
+                    <img src="https://play-lh.googleusercontent.com/rhR-LoSxuWCMpp_vxRIV4QTaAdJEUT4fbaL6UMc2lVR5xK0_geqyAvb2NETYJilIyA=s256-rw" alt="App" class="bento-icon">
+                    <div>
+                        <h4 class="bento-title-sm">ID Cards to pdf</h4>
+                        <p class="bento-cat">Utilities</p>
+                    </div>
+                </div>
+                <span class="bento-arrow-sm">→</span>
+            </a>
+            
+            <a href="#" class="bento-item group">
+                <div class="bento-content-small">
+                    <img src="https://play-lh.googleusercontent.com/ZSuFpoxR2ri65tfrZQYUWCjzHDB1CZH6IFTldQ9LRdOJPlmfdTSsZh2BTlz8dbbvI27Bw614-ximmFp8ae2AUA=s256-rw" alt="App" class="bento-icon">
+                    <div>
+                        <h4 class="bento-title-sm">Token Number Announcer</h4>
+                        <p class="bento-cat">Productivity</p>
+                    </div>
+                </div>
+                <span class="bento-arrow-sm">→</span>
+            </a>
+            
+            <a href="#" class="bento-item group">
+                <div class="bento-content-small">
+                    <img src="https://play-lh.googleusercontent.com/_s5h-96RNQIwgc5VE-VAOiXR4531sDX0vuwbM8RUvkW6Fzu7HClGZuUhGgFlrXvlmXg=s256-rw" alt="App" class="bento-icon">
+                    <div>
+                        <h4 class="bento-title-sm">Bulk image rotator</h4>
+                        <p class="bento-cat">Tools</p>
+                    </div>
+                </div>
+                <span class="bento-arrow-sm">→</span>
+            </a>
+
+            <!-- Stats Box -->
+            <div class="bento-item bento-stats-box">
+                <div class="stats-number">10+</div>
+                <div class="stats-label">Published Apps</div>
+                <div class="stats-sub">on Google Play Store</div>
+            </div>
+        </div>
+    </div>
+</section>
 
         <!-- Services Section -->
         <section id="services" class="max-w-7xl mx-auto">
@@ -710,7 +1048,7 @@ Some annoyances turn into automation.</p>
                         <div class="service-image-container">
                             <img src="https://blogger.googleusercontent.com/img/a/AVvXsEjfSuiS4rnk-qsUFeWC9SYHiGLwWWnHWpUkKn8aSrZtN7iTOs9updslqXX1vs7FAc7T1whp8JFAU5vrJ34_H036XWdCc5N3xj8FlSd0LHXQonaSWgq3RthBEXIUn9sPVj7aUVrnetmEgUAPmJRHhsJb6aLczOlx7Z7DMOHqvT7lC_bdTaR3ctBd1Q12thu5" alt="Creative Animation" class="service-image">
                         </div>
-                        <h3 class="text-xl font-bold mb-3">Creative Animation</h3>
+                        <h3 class="text-xl font-bold mb-3">Video & Animation</h3>
                         <p class="text-gray-400 text-sm leading-relaxed">Motion design and micro-interactions that bring interfaces to life using GSAP and CSS animations.</p>
                     </div>
                 </div>
@@ -751,6 +1089,7 @@ Some annoyances turn into automation.</p>
                 </div>
             </div>
         </section>
+
         <!-- Testimonials Section -->
         <section id="testimonials" class="max-w-7xl mx-auto">
             <div class="w-full">
@@ -1180,6 +1519,7 @@ if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
         el.addEventListener('mouseleave', () => gsap.to('#cursor', { scale: 1, backgroundColor: 'transparent' }));
     });
 }
+
     </script>
 </body>
 </html>
