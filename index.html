@@ -8,6 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap');
 
@@ -1123,39 +1124,62 @@ Some annoyances turn into automation.</p>
         </section>
 
        <!-- About Section -->
-        <section id="about" class="max-w-7xl mx-auto">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                <div class="glass p-12 aspect-square flex flex-col justify-center">
-                    <h2 class="text-4xl font-bold mb-6">THE PHILOSOPHY</h2>
+        <!-- About Section with 3D Model -->
+<section id="about" class="max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        <!-- 3D Model Viewer -->
+        <div class="glass aspect-square overflow-hidden relative p-0">
+            <model-viewer
+                src="https://raw.githubusercontent.com/Akshay-cp7/Glb_host/main/akshaycp.glb"
+                alt="Akshay CP 3D Portrait"
+                auto-rotate
+                camera-controls
+                touch-action="pan-y"
+                rotation-per-second="30deg"
+                camera-orbit="0deg 90deg 2.5m"
+                min-camera-orbit="auto auto 1.5m"
+                max-camera-orbit="auto auto 5m"
+                exposure="1"
+                shadow-intensity="1"
+                style="width: 100%; height: 100%; min-height: 400px; background: radial-gradient(ellipse at center, rgba(30, 30, 30, 1) 0%, rgba(10, 10, 10, 1) 100%); border-radius: 1rem;"
+            >
+            </model-viewer>
+            <div style="position: absolute; bottom: 1rem; left: 50%; transform: translateX(-50%); font-size: 0.7rem; color: rgba(255, 255, 255, 0.3); text-transform: uppercase; letter-spacing: 0.1em; pointer-events: none;">
+                Drag to rotate • Scroll to zoom
+            </div>
+        </div>
+        
+        <!-- Info Side -->
+        <div>
+            <div class="space-y-8">
+                <div>
+                    <h2 class="text-4xl font-bold mb-4 text-gradient">ABOUT ME</h2>
                     <p class="text-gray-400 text-lg leading-relaxed">
-                        I believe that the web should be more than just flat pages. By merging creative coding with modern design principles, I build environments that people don't just visit, but inhabit.
+                        I build whatever captures my interest. Some ideas turn into products. Some annoyances turn into automation.
                     </p>
                 </div>
                 <div>
-                    <div class="space-y-8">
-                        <div>
-                            <span class="text-xs font-bold tracking-widest text-gray-500 uppercase">Technologies</span>
-                            <div class="flex flex-wrap gap-2 mt-2">
-                                <span class="px-4 py-2 glass text-xs">THREE.JS</span>
-                                <span class="px-4 py-2 glass text-xs">WEBGL</span>
-                                <span class="px-4 py-2 glass text-xs">GSAP</span>
-                                <span class="px-4 py-2 glass text-xs">REACT</span>
-                                <span class="px-4 py-2 glass text-xs">TYPESCRIPT</span>
-                            </div>
-                        </div>
-                        <div>
-                            <span class="text-xs font-bold tracking-widest text-gray-500 uppercase">Recognition</span>
-                            <ul class="mt-2 space-y-2 text-gray-400">
-                                <li>🏆 Tripo 3D AI Contest Winner (2024)</li>
-                                <li>Awwwards - SOTD (2023)</li>
-                                <li>FWA - Site of the Month</li>
-                                <li>CSS Design Awards - Innovation</li>
-                            </ul>
-                        </div>
+                    <span class="text-xs font-bold tracking-widest text-gray-500 uppercase">Technologies</span>
+                    <div class="flex flex-wrap gap-2 mt-2">
+                        <span class="px-4 py-2 glass text-xs">FLUTTER</span>
+                        <span class="px-4 py-2 glass text-xs">DART</span>
+                        <span class="px-4 py-2 glass text-xs">FIREBASE</span>
+                        <span class="px-4 py-2 glass text-xs">THREE.JS</span>
+                        <span class="px-4 py-2 glass text-xs">AR/VR</span>
                     </div>
                 </div>
+                <div>
+                    <span class="text-xs font-bold tracking-widest text-gray-500 uppercase">Recognition</span>
+                    <ul class="mt-2 space-y-2 text-gray-400">
+                        <li>🏆 Tripo 3D AI Contest Winner (2025)</li>
+                        <li>📱 10+ Apps on Google Play Store</li>
+                        <li>🎓 B.Tech Computer Science</li>
+                    </ul>
+                </div>
             </div>
-        </section>
+        </div>
+    </div>
+</section>
 
         <!-- Testimonials Section -->
         <section id="testimonials" class="max-w-7xl mx-auto">
