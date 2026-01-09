@@ -608,6 +608,45 @@
     color: rgba(255,255,255,0.4);
     margin-top: 0.25rem;
 }
+/* Organizer Logos */
+.organizer-logo-container {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 215, 0, 0.15);
+    border-radius: 0.75rem;
+    padding: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    aspect-ratio: 16/10;
+    overflow: hidden;
+}
+
+.organizer-logo-container:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 215, 0, 0.4);
+    transform: translateY(-2px);
+}
+
+.organizer-logo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: grayscale(100%) brightness(0.8);
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+.organizer-logo-container:hover .organizer-logo {
+    filter: grayscale(0%) brightness(1);
+    opacity: 1;
+}
+
+@media (max-width: 768px) {
+    .organizer-logo-container {
+        padding: 0.5rem;
+    }
+}
     </style>
 </head>
 <body>
@@ -672,87 +711,115 @@ Some annoyances turn into automation.</p>
                 <div class="project-image-container bg-zinc-900 rounded-lg mb-4 overflow-hidden relative">
                      <img src="https://blogger.googleusercontent.com/img/a/AVvXsEhSnsiYlX_cFEtohSjvHgWM2bdEv0LlVYq1EhHV3FzBRGZV7Kw3aX-pFRi-swLq5QhXVzPRIqDp28G26Bsrc-50paItPWdLhqPpA6UcOgJLqhugwQrIswpSZeX7xmoKOZOspvvjEBTVzaGPpqDJ09fswfyq39cPR_tgJg3Hxwtu3bAKBC8HbWFFi7kNJrRO" class="project-image" alt="project">
                 </div>
-                <div class="px-4 pb-1 pt-2">
-                    <h3 class="text-xl font-bold text-gray-400">GLB AR Viewer 3D</h3> 
-                    <p class="text-gray-500 text-sm">View and place 3D models in real world space using AR.</p>
+                               <div class="px-4 pb-1 pt-2">
+                    <h3 class="text-lg font-bold text-gray-400">GLB AR Viewer 3D</h3> 
+                    <p class="text-gray-500 text-xs">View and place 3D models in real world space using AR.</p>
                 </div>
+
             </div>
             <div class="glass p-4 group cursor-pointer overflow-hidden mt-0 md:mt-20">
                 <div class="project-image-container bg-zinc-900 rounded-lg mb-4 overflow-hidden relative">
                     <img src="https://blogger.googleusercontent.com/img/a/AVvXsEg7PpBDBnUEYDbLJFFTmq8ew9HQPdSl-uL0itb572NbPn2p83oWYvI6Qpo8lHY-wzL51v9_UTD_kkDjWjmWtQzWRBOdGeGuihOArEco2HKZHHQ6PX0PRjMUPH5gW8pMAxRIVrrrf0pL6m39CjwR-WZJQsx6bA0OfxHK_t2EjPg-WYKK6XrskjAFaERaMXcV" class="project-image" alt="project">
                 </div>
                 <div class="px-2 pb-2">
-                    <h3 class="text-xl font-bold text-gray-400">GyroAir</h3>
-                    <p class="text-gray-500 text-sm">Turns your phone into an air mouse using gyroscope sensors.</p>
+                    <h3 class="text-lg font-bold text-gray-400">GyroAir</h3>
+                    <p class="text-gray-500 text-xs">Turns your phone into an air mouse using gyroscope sensors.</p>
                 </div>
             </div>
             <div class="glass p-4 group cursor-pointer overflow-hidden md:mb-20">
                 <div class="project-image-container bg-zinc-900 rounded-lg mb-4 overflow-hidden relative">
                     <img src="https://blogger.googleusercontent.com/img/a/AVvXsEhMJoYxKwJSXJsHuBbu9uLAo7fYd6NTEieCjIzgROPHcYFXfyHX-jUT76F1ig3QQ5ZjhFr7M7GD0gr_r3zaUx_w3X9SQPOIuZuU3-eAkWqCOh-yodZoGYN_2adaQJYY_wd2mf2dGVr-xwMqs3H_Uy4ofDUmCyvTcA2wcrqkSIBelVLbo5KolhH_rz-dZ31h" class="project-image" alt="project">
                 </div>
-                <div class="px-2 pb-2">
-                    <h3 class="text-xl font-bold text-gray-400">+2 Chemistry Salt Analysis</h3>
-                    <p class="text-gray-500 text-sm">Interactive virtual lab for +2 students to conduct experiments.</p>
+               <div class="px-2 pb-2">
+                    <h3 class="text-lg font-bold text-gray-400">+2 Chemistry Salt Analysis</h3>
+                    <p class="text-gray-500 text-xs">Interactive virtual lab for +2 students to conduct experiments.</p>
                 </div>
             </div>
             <div class="glass p-4 group cursor-pointer overflow-hidden mt-0 md:mt-20">
                 <div class="project-image-container bg-zinc-900 rounded-lg mb-4 overflow-hidden relative">
                     <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgjj-3tMSAoNmeXcx33xb8puzt5jeMnMXzzS__0qGmMB-QCtIZUaDm1KsGbYyK1FBDJntpe8xXyKMw5EEj3w42m25x0FKAZjV9NvJt0x0bbGzP5_RIdUbBf8iez4Ar0iF0vY1lWNT7E_oSw_TLcdNJyXgeNBOqGbLW52TsZVSQuP4l1_VVi5TdMyYv26MMN" class="project-image" alt="project">
                 </div>
-                <div class="px-2 pb-2">
-                    <h3 class="text-xl font-bold text-gray-400">Multiple PDF Parallel Viewer</h3>
-                    <p class="text-gray-500 text-sm">View multiple PDFs side-by-side without context switching.</p>
+                 <div class="px-2 pb-2">
+                    <h3 class="text-lg font-bold text-gray-400">Multiple PDF Parallel Viewer</h3>
+                    <p class="text-gray-500 text-xs">View multiple PDFs side-by-side without context switching.</p>
                 </div>
             </div>
         </div>
 
         <!-- Award Banner -->
-        <div class="award-banner rounded-xl p-6 mt-12 relative">
-            <!-- Sparkle effects -->
-            <div class="sparkle"></div>
-            <div class="sparkle"></div>
-            <div class="sparkle"></div>
-            <div class="sparkle"></div>
+        <!-- Award Banner -->
+<div class="award-banner rounded-xl p-6 mt-12 relative">
+    <!-- Sparkle effects -->
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div> 
+    
+    <div class="flex flex-col md:flex-row items-center justify-between gap-4 relative z-10">
+        <div class="flex items-center gap-4">
+            <!-- Trophy Icon -->
+            <div class="trophy-glow">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffd700" class="w-12 h-12">
+                    <path fill-rule="evenodd" d="M5.166 2.621v.858c-1.035.148-2.059.33-3.071.543a.75.75 0 00-.584.859 6.753 6.753 0 006.138 5.6 6.73 6.73 0 002.743 1.346A6.707 6.707 0 019.279 15H8.54c-1.036 0-1.875.84-1.875 1.875V19.5h-.75a2.25 2.25 0 00-2.25 2.25c0 .414.336.75.75.75h15.19a.75.75 0 00.75-.75 2.25 2.25 0 00-2.25-2.25h-.75v-2.625c0-1.036-.84-1.875-1.875-1.875h-.739a6.706 6.706 0 01-1.112-3.173 6.73 6.73 0 002.743-1.347 6.753 6.753 0 006.139-5.6.75.75 0 00-.585-.858 47.077 47.077 0 00-3.07-.543V2.62a.75.75 0 00-.658-.744 49.22 49.22 0 00-6.093-.377c-2.063 0-4.096.128-6.093.377a.75.75 0 00-.657.744zm0 2.629c0 1.196.312 2.32.857 3.294A5.266 5.266 0 013.16 5.337a45.6 45.6 0 012.006-.343v.256zm13.5 0v-.256c.674.1 1.343.214 2.006.343a5.265 5.265 0 01-2.863 3.207 6.72 6.72 0 00.857-3.294z" clip-rule="evenodd" />
+                </svg>
+            </div>
             
-            <div class="flex flex-col md:flex-row items-center justify-between gap-4 relative z-10">
-                <div class="flex items-center gap-4">
-                    <!-- Trophy Icon -->
-                    <div class="trophy-glow">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffd700" class="w-12 h-12">
-                            <path fill-rule="evenodd" d="M5.166 2.621v.858c-1.035.148-2.059.33-3.071.543a.75.75 0 00-.584.859 6.753 6.753 0 006.138 5.6 6.73 6.73 0 002.743 1.346A6.707 6.707 0 019.279 15H8.54c-1.036 0-1.875.84-1.875 1.875V19.5h-.75a2.25 2.25 0 00-2.25 2.25c0 .414.336.75.75.75h15.19a.75.75 0 00.75-.75 2.25 2.25 0 00-2.25-2.25h-.75v-2.625c0-1.036-.84-1.875-1.875-1.875h-.739a6.706 6.706 0 01-1.112-3.173 6.73 6.73 0 002.743-1.347 6.753 6.753 0 006.139-5.6.75.75 0 00-.585-.858 47.077 47.077 0 00-3.07-.543V2.62a.75.75 0 00-.658-.744 49.22 49.22 0 00-6.093-.377c-2.063 0-4.096.128-6.093.377a.75.75 0 00-.657.744zm0 2.629c0 1.196.312 2.32.857 3.294A5.266 5.266 0 013.16 5.337a45.6 45.6 0 012.006-.343v.256zm13.5 0v-.256c.674.1 1.343.214 2.006.343a5.265 5.265 0 01-2.863 3.207 6.72 6.72 0 00.857-3.294z" clip-rule="evenodd" />
-                        </svg>
-                    </div>
-                    
-                    <div>
-                        <div class="flex items-center gap-2 mb-1">
-                            <span class="text-xs font-bold tracking-widest uppercase" style="color: #ffd700;">Global Event</span>
-                        </div>
-                        <h3 class="text-lg md:text-xl font-bold text-white">Won Tripo 3D AI Contest</h3>
-                        <p class="text-gray-400 text-sm">Event : Boss Fight in Multiverse</p>
-                    </div>
+            <div>
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="text-xs font-bold tracking-widest uppercase" style="color: #ffd700;">Global Event Winner</span>
                 </div>
-                
-                <div class="flex items-center gap-3">
-                    <div class="text-center md:text-right">
-                        <div class="flex items-center gap-2 justify-center md:justify-end">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffd700" class="w-4 h-4">
-                                <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
-                            </svg>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffd700" class="w-4 h-4">
-                                <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
-                            </svg>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffd700" class="w-4 h-4">
-                                <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
-                            </svg>
-                        </div>
-                        <span class="text-xs text-gray-500">June 2025</span>
-                    </div>
-                    <a href="https://www.tripo3d.ai/event/boss-fight-in-multiverse" target="_blank" class="px-4 py-2 text-xs font-bold uppercase tracking-widest rounded-lg transition-all duration-300 hover:scale-105" style="background: linear-gradient(135deg, #ffd700, #ff8c00); color: #000;">
-                        View Event
-                    </a>
-                </div>
+                <h3 class="text-lg md:text-xl font-bold text-white">Won Tripo 3D AI Contest</h3>
+                <p class="text-gray-400 text-sm">Event : Boss Fight in Multiverse</p>
             </div>
         </div>
+        
+        <div class="flex items-center gap-3">
+            <div class="text-center md:text-right">
+                <div class="flex items-center gap-2 justify-center md:justify-end">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffd700" class="w-4 h-4">
+                        <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffd700" class="w-4 h-4">
+                        <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffd700" class="w-4 h-4">
+                        <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <span class="text-xs text-gray-500">June 2025</span>
+            </div>
+            <a href="https://www.tripo3d.ai/event/boss-fight-in-multiverse" target="_blank" class="px-4 py-2 text-xs font-bold uppercase tracking-widest rounded-lg transition-all duration-300 hover:scale-105" style="background: linear-gradient(135deg, #ffd700, #ff8c00); color: #000;">
+                View Event
+            </a>
+        </div>
+    </div>
+
+
+    <!-- Event Organizers Section -->
+<div class="mt-6 pt-6 border-t border-white/10 relative z-10">
+    <p class="text-xs font-bold tracking-widest uppercase text-center mb-4" style="color: rgba(255, 215, 0, 0.7);">Event Organized & Sponsored By</p>
+    <div class="grid grid-cols-3 md:grid-cols-6 gap-4">
+        <div class="organizer-logo-container">
+            <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgNLaWIsL8A9OyWeZfr_ylbAWd-5a5crsqpTjILPZweiW7RyYzZ0JTRU_3hw2sMELJXmtHx6MZlMvYC1hN-ue1tu5WjvrxUbMTw7BpLuh3KP2RDE4M6_KFX3juQetJ0lTwgprnlLEp-CQu6oRObhmfAXR9eeRQlw0fSwqdmKMcDByFwPMMyl0rFRtN1OWCM" alt="Organizer 1" class="organizer-logo">
+        </div>
+        <div class="organizer-logo-container">
+            <img src="https://blogger.googleusercontent.com/img/a/AVvXsEiUY2zsUV1rv8KR4dTc6LmWHbgWqggy7IKXJrwb4Nkw822eujNOhESASoiscHwnR-nJ869_I2pLxCENbxA3ewnaq6Whltx2i-TjmAHma1YlbcBRyxYk-lONn1EekqIdpvcX5WOUn5X0TStyU6DLZGe4S12b4QO5UFlHZ2pymGyvBmv9mMjE7OvMPiKuqPpt" alt="Organizer 2" class="organizer-logo">
+        </div>
+        <div class="organizer-logo-container">
+            <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgTI-5gUoVvR6O0gHif88lTNo27-kCwNGcs_bRxeqrrQX9arW8GQSxbbz0K8WTGjKhYFXBG1f-WKZTGPUkKfXcQsyVdXLaEwyVgnflAOCU4wQwkpWjOmJoENEKhwD3mwc3jv7d__9vm6l104JJDOZOFAaR3xUy3XA25Z9fC-3oNoXSBdt_p1cKF28fKvmz2" alt="Organizer 3" class="organizer-logo">
+        </div>
+        <div class="organizer-logo-container">
+            <img src="https://blogger.googleusercontent.com/img/a/AVvXsEho3d01YeBpzCeH2QHu9LV1uSKcWd99xnenYV0hAe6o1IqjKSy--EloEGMeiJ3pNES1BZCMIVQhy05DvxDiC6F64TyXDBZ3gv4jdr8X88zSSbewRi9jamIIdECKy5-JlfyBJsu-ZEHny8T98rJm63AAPDIDQE_TNkkTaPk4WU-l6W5vuOCZMRmavnuuMXJl" alt="Organizer 4" class="organizer-logo">
+        </div>
+        <div class="organizer-logo-container">
+            <img src="https://blogger.googleusercontent.com/img/a/AVvXsEhnBSs57kjPef_Sy_Q9oeOzhDqz-Uq2tazImCQNNFYoEnuLUxoexkb5C2kCa2wHc7PeuMQqwO02Ce7h47f5bnpEZjkNLITj8DY85Os2UschM8ZvXEBks5lfPqEX6W2guHlTwN6zmZbh435h05LWXfy0naHXYnVmSoQ9v-6JFQYk85OMA3NYyxGwvP9-wgVC" alt="Organizer 5" class="organizer-logo">
+        </div>
+        <div class="organizer-logo-container">
+            <img src="https://blogger.googleusercontent.com/img/a/AVvXsEigPw6WJ_hKeJjSUeDEpxit-QXB4o-B8XRHnL5cbKboovB4mG1ZQ29aRfh3HaBzP8GkAxBP97KQ3j8-e8g8LNLiy_6ND5c0qP_ccSShTHl9tghrXJmo0RBjU_qaLFz5rovkMqSJUd_OJAfyygHslX-3ROLCDqvH0lckAMtvX8k2eV-VpRSH2gJvNerKiUlD" alt="Organizer 6" class="organizer-logo">
+        </div>
+    </div>
+</div>
+</div>
     </div>
 </section>
           <!-- Experience Section -->
@@ -850,7 +917,7 @@ Some annoyances turn into automation.</p>
                 </div>
                 <div>
                     <div class="flex justify-between mb-2">
-                        <span class="text-sm font-bold uppercase tracking-widest">3D / AR / Three.js</span>
+                        <span class="text-sm font-bold uppercase tracking-widest">3D / AR </span>
                         <span class="text-gray-500 text-sm">80%</span>
                     </div>
                     <div class="skill-bar">
@@ -880,7 +947,7 @@ Some annoyances turn into automation.</p>
                 </div>
                 <div>
                     <div class="flex justify-between mb-2">
-                        <span class="text-sm font-bold uppercase tracking-widest">GSAP / Animations</span>
+                        <span class="text-sm font-bold uppercase tracking-widest">Video Editing / Animations</span>
                         <span class="text-gray-500 text-sm">80%</span>
                     </div>
                     <div class="skill-bar">
