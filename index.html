@@ -724,22 +724,25 @@ Some annoyances turn into automation.</p>
         <!-- 3D Model Viewer -->
         <div class="glass aspect-square overflow-hidden relative p-0">
             <model-viewer
-                src="https://raw.githubusercontent.com/Akshay-cp7/Glb_host/main/animated_akshay_cp.glb"
-                alt="Akshay CP 3D Portrait"
-               
-                autoplay
-                camera-controls
-                disable-zoom
-                touch-action="pan-y"
-                rotation-per-second="30deg"
-                camera-orbit="0deg 90deg 2.5m"
-                min-camera-orbit="auto 90deg 2.5m"
-                max-camera-orbit="auto 90deg 2.5m"
-                exposure="1"
-                shadow-intensity="1"
-                style="width: 100%; height: 100%; min-height: 400px; background: radial-gradient(ellipse at center, rgba(30, 30, 30, 1) 0%, rgba(10, 10, 10, 1) 100%); border-radius: 1rem;"
-            >
-            </model-viewer>
+    id="avatar-model"
+    src="https://raw.githubusercontent.com/Akshay-cp7/Glb_host/main/animated_akshay_cp.glb"
+    alt="Akshay CP 3D Portrait"
+    loading="eager"
+    reveal="auto"
+    autoplay
+    camera-controls
+    disable-zoom
+    touch-action="pan-y"
+    rotation-per-second="30deg"
+    camera-orbit="0deg 90deg 2.5m"
+    min-camera-orbit="auto 90deg 2.5m"
+    max-camera-orbit="auto 90deg 2.5m"
+    exposure="1"
+    shadow-intensity="1"
+    style="width: 100%; height: 100%; min-height: 400px; background: radial-gradient(ellipse at center, rgba(30, 30, 30, 1) 0%, rgba(10, 10, 10, 1) 100%); border-radius: 1rem;"
+>
+</model-viewer>
+       
             <!-- Bottom fade overlay to hide cropped edges -->
             <div class="model-bottom-fade"></div>
         </div>
@@ -1367,13 +1370,76 @@ save time all fair game.
     </footer>
 
     <script>
-      // --- LOADING SCREEN ---
+// --- LOADING STATE TRACKING ---
+let threeJsReady = false;
+let modelViewerReady = false;
+let loadingScreenHidden = false;
+
+function checkAllLoaded() {
+    if (threeJsReady && modelViewerReady && !loadingScreenHidden) {
+        hideLoadingScreen();
+    }
+}
+
+// Fallback: Hide loading screen after max 8 seconds even if model fails
+setTimeout(() => {
+    if (!loadingScreenHidden) {
+        console.log('Fallback: Hiding loading screen after timeout');
+        hideLoadingScreen();
+    }
+}, 8000);
+
+// --- LOADING SCREEN ---
 function hideLoadingScreen() {
+    if (loadingScreenHidden) return;
+    loadingScreenHidden = true;
+    
     const loadingScreen = document.getElementById('loading-screen');
     loadingScreen.classList.add('loading-hidden');
     setTimeout(() => {
         loadingScreen.style.display = 'none';
     }, 1000);
+}
+
+// --- MODEL-VIEWER PRELOADING ---
+function initModelViewer() {
+    const modelViewer = document.getElementById('avatar-model');
+    
+    if (!modelViewer) {
+        console.log('Model viewer not found, marking as ready');
+        modelViewerReady = true;
+        checkAllLoaded();
+        return;
+    }
+    
+    // Check if already loaded
+    if (modelViewer.loaded) {
+        console.log('Model already loaded');
+        modelViewerReady = true;
+        checkAllLoaded();
+        return;
+    }
+    
+    // Listen for load event
+    modelViewer.addEventListener('load', () => {
+        console.log('3D Model loaded successfully');
+        modelViewerReady = true;
+        checkAllLoaded();
+    });
+    
+    // Listen for error
+    modelViewer.addEventListener('error', (e) => {
+        console.error('Model loading error:', e);
+        modelViewerReady = true; // Mark as ready anyway to not block the site
+        checkAllLoaded();
+    });
+    
+    // Progress tracking (optional - for loading bar)
+    modelViewer.addEventListener('progress', (e) => {
+        const progress = e.detail.totalProgress * 100;
+        console.log(`Model loading: ${progress.toFixed(0)}%`);
+        // You could update a loading bar here
+    });
 }
 
 // --- THREE.JS SCENE SETUP ---
@@ -1392,7 +1458,7 @@ let torusBaseRotY = 0;
 let torusMouseRotX = 0;
 let torusMouseRotY = 0;
 
-// FIXED: Smooth camera scrolling for mobile
+// Smooth camera scrolling
 let targetCameraZ = 5;
 let currentCameraZ = 5;
 let currentScrollY = 0;
@@ -1409,13 +1475,12 @@ function initThree() {
 
     renderer = new THREE.WebGLRenderer({ antialias: !isMobile, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    // Lower pixel ratio on mobile for performance
     renderer.setPixelRatio(isMobile ? Math.min(window.devicePixelRatio, 1.5) : Math.min(window.devicePixelRatio, 2));
     document.getElementById('canvas-container').appendChild(renderer.domElement);
 
-    // Create Sparkles (Particles) - REDUCED for mobile
+    // Create Sparkles (Particles)
     const particlesGeometry = new THREE.BufferGeometry();
-    const count = isMobile ? 1500 : 3000; // Fewer particles on mobile
+    const count = isMobile ? 1500 : 3000;
     const posArray = new Float32Array(count * 3);
 
     for(let i = 0; i < count * 3; i++) {
@@ -1425,7 +1490,7 @@ function initThree() {
     particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
     
     const particlesMaterial = new THREE.PointsMaterial({
-        size: isMobile ? 0.008 : 0.005, // Slightly larger on mobile so fewer looks ok
+        size: isMobile ? 0.008 : 0.005,
         color: 0xffffff,
         transparent: true,
         opacity: 0.8,
@@ -1435,7 +1500,7 @@ function initThree() {
     particles = new THREE.Points(particlesGeometry, particlesMaterial);
     scene.add(particles);
 
-    // Create Central Object - Simpler on mobile
+    // Create Central Object
     const segments = isMobile ? 80 : 150;
     const geometry = new THREE.TorusKnotGeometry(1.3, 0.4, segments, 20);
     const material = new THREE.MeshStandardMaterial({ 
@@ -1461,7 +1526,10 @@ function initThree() {
 
     animate();
     
-    setTimeout(hideLoadingScreen, 2500);
+    // Mark Three.js as ready
+    console.log('Three.js scene ready');
+    threeJsReady = true;
+    checkAllLoaded();
 }
 
 function animate() {
@@ -1496,11 +1564,8 @@ function animate() {
         torus.rotation.y = torusBaseRotY + torusMouseRotY;
     }
 
-    // === CAMERA SCROLL - SMOOTH FOR MOBILE ===
-    // Smooth the scroll value first
+    // === CAMERA SCROLL - SMOOTH ===
     currentScrollY += (targetScrollY - currentScrollY) * 0.08;
-    
-    // Then smooth the camera position
     targetCameraZ = 5 + currentScrollY * 0.001;
     currentCameraZ += (targetCameraZ - currentCameraZ) * 0.05;
     camera.position.z = currentCameraZ;
@@ -1508,8 +1573,7 @@ function animate() {
     renderer.render(scene, camera);
 }
 
-// --- SCROLL TRACKING - FIXED FOR MOBILE ---
-// Use passive listener for better mobile performance
+// --- SCROLL TRACKING ---
 window.addEventListener('scroll', () => {
     targetScrollY = window.scrollY;
 }, { passive: true });
@@ -1519,7 +1583,6 @@ window.addEventListener('mousemove', (e) => {
     mouseX = (e.clientX / window.innerWidth) - 0.5;
     mouseY = (e.clientY / window.innerHeight) - 0.5;
 
-    // Custom Cursor
     gsap.to('#cursor', {
         x: e.clientX - 10,
         y: e.clientY - 10,
@@ -1527,7 +1590,7 @@ window.addEventListener('mousemove', (e) => {
     });
 });
 
-// --- TOUCH TRACKING (Mobile - subtle tilt effect) ---
+// --- TOUCH TRACKING (Mobile) ---
 if (isMobile) {
     window.addEventListener('touchmove', (e) => {
         if (e.touches.length > 0) {
@@ -1536,9 +1599,7 @@ if (isMobile) {
         }
     }, { passive: true });
     
-    // Reset on touch end for smooth return
     window.addEventListener('touchend', () => {
-        // Gradually return to center
         mouseX = 0;
         mouseY = 0;
     }, { passive: true });
@@ -1620,9 +1681,10 @@ gsap.utils.toArray('.text-gradient').forEach(title => {
     });
 });
 
-// Initializing
+// --- INITIALIZATION ---
 window.onload = () => {
     initThree();
+    initModelViewer();
 };
 
 // Cursor scaling on links - only for non-touch devices
@@ -1632,7 +1694,6 @@ if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
         el.addEventListener('mouseleave', () => gsap.to('#cursor', { scale: 1, backgroundColor: 'transparent' }));
     });
 }
-
-    </script>
+</script>
 </body>
 </html>
