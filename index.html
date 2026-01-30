@@ -1,926 +1,1011 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Akshay CP | Portfolio</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+    <script
+      type="module"
+      src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"
+    ></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap');
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap");
 
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #050505;
-            color: white;
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #050505;
+        color: white;
+        font-family: "Inter", sans-serif;
+        overflow-x: hidden;
+      }
+
+      #loading-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #050505 0%, #1a1a1a 100%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        backdrop-filter: blur(10px);
+      }
+
+      .loading-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+        text-align: center;
+      }
+
+      .loading-text {
+        font-size: 0.75rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.6);
+        animation: fadeInOut 2.5s ease-in-out;
+        text-align: center; /* ADD THIS */
+      }
+
+      @keyframes fadeInOut {
+        0%,
+        100% {
+          opacity: 0.5;
         }
-
-        #loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #050505 0%, #1a1a1a 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            backdrop-filter: blur(10px);
+        50% {
+          opacity: 1;
         }
+      }
 
-        .loading-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2rem;
-            text-align: center;
+      .loading-dots {
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .dot {
+        width: 6px;
+        height: 6px;
+        background: rgba(255, 255, 255, 0.6);
+        border-radius: 50%;
+        animation: dotBounce 1.2s ease-in-out infinite;
+      }
+
+      .dot:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+
+      .dot:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+
+      @keyframes dotBounce {
+        0%,
+        100% {
+          transform: translateY(0);
+          opacity: 0.5;
         }
-
-
-
-
-  
-
-
-
-        .loading-text {
-    font-size: 0.75rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.6);
-    animation: fadeInOut 2.5s ease-in-out;
-    text-align: center; /* ADD THIS */
-}
-
-        @keyframes fadeInOut {
-            0%, 100% {
-                opacity: 0.5;
-            }
-            50% {
-                opacity: 1;
-            }
+        50% {
+          transform: translateY(-8px);
+          opacity: 1;
         }
+      }
 
-        .loading-dots {
-            display: flex;
-            gap: 0.5rem;
+      .loading-hidden {
+        animation: fadeOutUp 1s ease-out forwards;
+        pointer-events: none;
+      }
+
+      @keyframes fadeOutUp {
+        0% {
+          opacity: 1;
+          transform: translateY(0);
         }
-
-        .dot {
-            width: 6px;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.6);
-            border-radius: 50%;
-            animation: dotBounce 1.2s ease-in-out infinite;
+        100% {
+          opacity: 0;
+          transform: translateY(-20px);
         }
+      }
 
-        .dot:nth-child(2) {
-            animation-delay: 0.2s;
-        }
+      #canvas-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+      }
 
-        .dot:nth-child(3) {
-            animation-delay: 0.4s;
-        }
+      .glass {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 1rem;
+      }
 
-        @keyframes dotBounce {
-            0%, 100% {
-                transform: translateY(0);
-                opacity: 0.5;
-            }
-            50% {
-                transform: translateY(-8px);
-                opacity: 1;
-            }
-        }
-
-        .loading-hidden {
-            animation: fadeOutUp 1s ease-out forwards;
-            pointer-events: none;
-        }
-
-        @keyframes fadeOutUp {
-            0% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-        }
-
-        #canvas-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-
-        .glass {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 1rem;
-        }
-
-        .text-gradient {
+      .text-gradient {
         background: linear-gradient(to right, #fff, #666);
         -webkit-background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: transparent;
         padding-bottom: 0.15em; /* Adds space for descenders */
         display: inline-block; /* Required for padding to work properly */
-        }
+      }
 
-        section {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            padding: 4rem 2rem;
-            position: relative;
-        }
+      section {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        padding: 4rem 2rem;
+        position: relative;
+      }
 
+      .custom-cursor {
+        width: 20px;
+        height: 20px;
+        border: 2px solid white;
+        border-radius: 50%;
+        position: fixed;
+        pointer-events: none;
+        z-index: 9999;
+        transition: transform 0.1s ease;
+      }
+
+      /* Hide custom cursor on touch devices */
+      @media (hover: none) and (pointer: coarse) {
         .custom-cursor {
-            width: 20px;
-            height: 20px;
-            border: 2px solid white;
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            transition: transform 0.1s ease;
+          display: none;
         }
+      }
 
-        /* Hide custom cursor on touch devices */
-        @media (hover: none) and (pointer: coarse) {
-            .custom-cursor {
-                display: none;
-            }
-        }
+      .skill-bar {
+        height: 4px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 2px;
+        overflow: hidden;
+      }
 
-        .skill-bar {
-            height: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 2px;
-            overflow: hidden;
-        }
+      .skill-progress {
+        height: 100%;
+        background: linear-gradient(to right, #fff, #666);
+        border-radius: 2px;
+        transform-origin: left;
+      }
 
-        .skill-progress {
-            height: 100%;
-            background: linear-gradient(to right, #fff, #666);
-            border-radius: 2px;
-            transform-origin: left;
-        }
+      .timeline-line {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 1px;
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          rgba(255, 255, 255, 0.3),
+          transparent
+        );
+      }
 
-        .timeline-line {
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 1px;
-            background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.3), transparent);
-        }
-
-        .timeline-dot {
-            position: absolute;
-            left: -4px;
-            top: 0;
-            width: 9px;
-            height: 9px;
-            background: white;
-            border-radius: 50%;
-        }
-
-        /* Service Card Image Container */
-        .service-image-container {
-            width: 100%;
-            height: 160px;
-            overflow: hidden;
-            border-radius: 0.75rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .service-image {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            transition: all 0.5s ease;
-        }
-
-        @media (hover: hover) and (pointer: fine) {
-            .service-card:hover .service-image {
-                transform: scale(1.1);
-            }
-        }
-
-        /* Project Card Image Container */
-        .project-image-container {
-            height: 200px;
-        }
-
-        @media (min-width: 768px) {
-            .project-image-container {
-                height: 320px;
-            }
-        }
-
-        /* Project Image - No grayscale on mobile */
-        .project-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: all 0.7s ease;
-            transform: scale(1.1);
-        }
-
-        /* Only apply grayscale on desktop (hover-capable devices) */
-        @media (hover: hover) and (pointer: fine) {
-            .project-image {
-                filter: grayscale(100%);
-            }
-            
-            .group:hover .project-image {
-                filter: grayscale(0%);
-                transform: scale(1);
-            }
-        }
-
-        /* On touch devices, no grayscale and normal scale */
-        @media (hover: none) and (pointer: coarse) {
-            .project-image {
-                filter: grayscale(0%);
-                transform: scale(1);
-            }
-        }
-
-        /* Award Banner Styles */
-        .award-banner {
-            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 140, 0, 0.1) 50%, rgba(255, 215, 0, 0.05) 100%);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .award-banner::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.1), transparent);
-            animation: shimmer 3s infinite;
-        }
-
-        @keyframes shimmer {
-            0% {
-                left: -100%;
-            }
-            100% {
-                left: 100%;
-            }
-        }
-
-        .trophy-glow {
-            filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.5));
-            animation: trophyPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes trophyPulse {
-            0%, 100% {
-                filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.5));
-            }
-            50% {
-                filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8));
-            }
-        }
-
-        .sparkle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: #ffd700;
-            border-radius: 50%;
-            animation: sparkle 2s ease-in-out infinite;
-        }
-
-        .sparkle:nth-child(1) {
-            top: 20%;
-            left: 10%;
-            animation-delay: 0s;
-        }
-
-        .sparkle:nth-child(2) {
-            top: 30%;
-            right: 15%;
-            animation-delay: 0.5s;
-        }
-
-        .sparkle:nth-child(3) {
-            bottom: 25%;
-            left: 20%;
-            animation-delay: 1s;
-        }
-
-        .sparkle:nth-child(4) {
-            bottom: 20%;
-            right: 10%;
-            animation-delay: 1.5s;
-        }
-
-        @keyframes sparkle {
-            0%, 100% {
-                opacity: 0;
-                transform: scale(0);
-            }
-            50% {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-  
-/* ✅ KEEP ONLY THESE */
-@media (max-width: 768px) {
-    .loading-text {
-        font-size: 0.65rem;
-        letter-spacing: 0.15em;
-    }
-    
-    .dot {
-        width: 5px;
-        height: 5px;
-    }
-}
-/* Bento Box Layout */
-.bento-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem;
-}
-
-@media (min-width: 768px) {
-    .bento-grid {
-        grid-template-columns: repeat(3, 1fr);
-        grid-template-rows: auto auto auto;
-        gap: 1.25rem;
-    }
-}
-
-.bento-item {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 1.25rem;
-    padding: 1.25rem;
-    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    text-decoration: none;
-    color: inherit;
-}
-
-.bento-item::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 50%);
-    opacity: 0;
-    transition: opacity 0.4s ease;
-}
-
-@media (hover: hover) {
-    .bento-item:hover {
-        background: rgba(255, 255, 255, 0.06);
-        border-color: rgba(255, 255, 255, 0.15);
-        transform: translateY(-4px);
-    }
-    
-    .bento-item:hover::before {
-        opacity: 1;
-    }
-}
-
-/* Large Featured Item */
-.bento-large {
-    grid-column: 1 / -1;
-    padding: 2rem;
-    flex-direction: column;
-}
-
-@media (min-width: 768px) {
-    .bento-large {
-        grid-column: span 2;
-        grid-row: span 2;
-        padding: 2.5rem;
-    }
-}
-
-.bento-content {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    flex: 1;
-}
-
-@media (min-width: 768px) {
-    .bento-content {
-        flex-direction: row;
-        align-items: flex-start;
-    }
-}
-
-.bento-icon-large {
-    width: 100px;
-    height: 100px;
-    flex-shrink: 0;
-}
-
-@media (min-width: 768px) {
-    .bento-icon-large {
-        width: 120px;
-        height: 120px;
-    }
-}
-
-.bento-icon-large img {
-    width: 100%;
-    height: 100%;
-    border-radius: 24px;
-    object-fit: cover;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-    transition: transform 0.4s ease;
-}
-
-@media (hover: hover) {
-    .bento-large:hover .bento-icon-large img {
-        transform: scale(1.05) rotate(-2deg);
-    }
-}
-
-.bento-text {
-    flex: 1;
-}
-
-.bento-badge {
-    display: inline-block;
-    padding: 0.25rem 0.75rem;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 999px;
-    font-size: 0.65rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-bottom: 0.75rem;
-}
-
-.bento-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-}
-
-@media (min-width: 768px) {
-    .bento-title {
-        font-size: 1.75rem;
-    }
-}
-
-.bento-desc {
-    color: rgba(255,255,255,0.6);
-    font-size: 0.9rem;
-    line-height: 1.6;
-    margin-bottom: 1rem;
-}
-
-.bento-stats {
-    display: flex;
-    gap: 1rem;
-    font-size: 0.8rem;
-    color: rgba(255,255,255,0.5);
-}
-
-.bento-arrow {
-    position: absolute;
-    bottom: 1.5rem;
-    right: 1.5rem;
-    width: 40px;
-    height: 40px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    color: rgba(255,255,255,0.6);
-}
-
-@media (hover: hover) {
-    .bento-large:hover .bento-arrow {
+      .timeline-dot {
+        position: absolute;
+        left: -4px;
+        top: 0;
+        width: 9px;
+        height: 9px;
         background: white;
-        color: black;
-        transform: rotate(45deg);
-    }
-}
+        border-radius: 50%;
+      }
 
-/* Small Items */
-.bento-content-small {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex: 1;
-}
+      /* Service Card Image Container */
+      .service-image-container {
+        width: 100%;
+        height: 160px;
+        overflow: hidden;
+        border-radius: 0.75rem;
+        margin-bottom: 1.5rem;
+      }
 
-.bento-icon {
-    width: 50px;
-    height: 50px;
-    border-radius: 12px;
-    object-fit: cover;
-    flex-shrink: 0;
-    transition: transform 0.3s ease;
-}
+      .service-image {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        transition: all 0.5s ease;
+      }
 
-@media (hover: hover) {
-    .bento-item:hover .bento-icon {
+      @media (hover: hover) and (pointer: fine) {
+        .service-card:hover .service-image {
+          transform: scale(1.1);
+        }
+      }
+
+      /* Project Card Image Container */
+      .project-image-container {
+        height: 200px;
+      }
+
+      @media (min-width: 768px) {
+        .project-image-container {
+          height: 320px;
+        }
+      }
+
+      /* Project Image - No grayscale on mobile */
+      .project-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: all 0.7s ease;
         transform: scale(1.1);
-    }
-}
+      }
 
-.bento-title-sm {
-    font-size: 0.95rem;
-    font-weight: 600;
-    margin-bottom: 0.15rem;
-}
+      /* Only apply grayscale on desktop (hover-capable devices) */
+      @media (hover: hover) and (pointer: fine) {
+        .project-image {
+          filter: grayscale(100%);
+        }
 
-.bento-cat {
-    font-size: 0.75rem;
-    color: rgba(255,255,255,0.5);
-}
+        .group:hover .project-image {
+          filter: grayscale(0%);
+          transform: scale(1);
+        }
+      }
 
-.bento-arrow-sm {
-    font-size: 1.25rem;
-    color: rgba(255,255,255,0.3);
-    transition: all 0.3s ease;
-    align-self: center;
-}
+      /* On touch devices, no grayscale and normal scale */
+      @media (hover: none) and (pointer: coarse) {
+        .project-image {
+          filter: grayscale(0%);
+          transform: scale(1);
+        }
+      }
 
-@media (hover: hover) {
-    .bento-item:hover .bento-arrow-sm {
-        color: white;
-        transform: translateX(4px);
-    }
-}
+      /* Award Banner Styles */
+      .award-banner {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 215, 0, 0.1) 0%,
+          rgba(255, 140, 0, 0.1) 50%,
+          rgba(255, 215, 0, 0.05) 100%
+        );
+        border: 1px solid rgba(255, 215, 0, 0.3);
+        position: relative;
+        overflow: hidden;
+      }
 
-/* Stats Box */
-.bento-stats-box {
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
-}
+      .award-banner::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 215, 0, 0.1),
+          transparent
+        );
+        animation: shimmer 3s infinite;
+      }
 
-.stats-number {
-    font-size: 3rem;
-    font-weight: 900;
-    background: linear-gradient(135deg, #fff 0%, #666 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    line-height: 1;
-}
+      @keyframes shimmer {
+        0% {
+          left: -100%;
+        }
+        100% {
+          left: 100%;
+        }
+      }
 
-.stats-label {
-    font-size: 0.9rem;
-    font-weight: 600;
-    margin-top: 0.5rem;
-}
+      .trophy-glow {
+        filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.5));
+        animation: trophyPulse 2s ease-in-out infinite;
+      }
 
-.stats-sub {
-    font-size: 0.75rem;
-    color: rgba(255,255,255,0.4);
-    margin-top: 0.25rem;
-}
-/* Organizer Logos */
-.organizer-logo-container {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 215, 0, 0.15);
-    border-radius: 0.75rem;
-    padding: 0.75rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    aspect-ratio: 16/10;
-    overflow: hidden;
-}
+      @keyframes trophyPulse {
+        0%,
+        100% {
+          filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.5));
+        }
+        50% {
+          filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8));
+        }
+      }
 
-.organizer-logo-container:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 215, 0, 0.4);
-    transform: translateY(-2px);
-}
+      .sparkle {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: #ffd700;
+        border-radius: 50%;
+        animation: sparkle 2s ease-in-out infinite;
+      }
 
-.organizer-logo {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    filter: grayscale(100%) brightness(0.8);
-    opacity: 0.7;
-    transition: all 0.3s ease;
-}
+      .sparkle:nth-child(1) {
+        top: 20%;
+        left: 10%;
+        animation-delay: 0s;
+      }
 
-.organizer-logo-container:hover .organizer-logo {
-    filter: grayscale(0%) brightness(1);
-    opacity: 1;
-}
+      .sparkle:nth-child(2) {
+        top: 30%;
+        right: 15%;
+        animation-delay: 0.5s;
+      }
 
-@media (max-width: 768px) {
-    .organizer-logo-container {
-        padding: 0.5rem;
-    }
-}
-/* Bottom fade overlay for 3D model */
-.model-bottom-fade {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 180px;
-    background: linear-gradient(
-        to bottom,
-        transparent 0%,
-        rgba(5, 5, 5, 0.3) 30%,
-        rgba(5, 5, 5, 0.7) 60%,
-        rgba(5, 5, 5, 0.95) 85%,
-        rgba(5, 5, 5, 1) 100%
-    );
-    pointer-events: none;
-    z-index: 10;
-    border-radius: 0 0 1rem 1rem;
-}
+      .sparkle:nth-child(3) {
+        bottom: 25%;
+        left: 20%;
+        animation-delay: 1s;
+      }
+
+      .sparkle:nth-child(4) {
+        bottom: 20%;
+        right: 10%;
+        animation-delay: 1.5s;
+      }
+
+      @keyframes sparkle {
+        0%,
+        100% {
+          opacity: 0;
+          transform: scale(0);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      /* ✅ KEEP ONLY THESE */
+      @media (max-width: 768px) {
+        .loading-text {
+          font-size: 0.65rem;
+          letter-spacing: 0.15em;
+        }
+
+        .dot {
+          width: 5px;
+          height: 5px;
+        }
+      }
+      /* Bento Box Layout */
+      .bento-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      @media (min-width: 768px) {
+        .bento-grid {
+          grid-template-columns: repeat(3, 1fr);
+          grid-template-rows: auto auto auto;
+          gap: 1.25rem;
+        }
+      }
+
+      .bento-item {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 1.25rem;
+        padding: 1.25rem;
+        transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        text-decoration: none;
+        color: inherit;
+      }
+
+      .bento-item::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.05) 0%,
+          transparent 50%
+        );
+        opacity: 0;
+        transition: opacity 0.4s ease;
+      }
+
+      @media (hover: hover) {
+        .bento-item:hover {
+          background: rgba(255, 255, 255, 0.06);
+          border-color: rgba(255, 255, 255, 0.15);
+          transform: translateY(-4px);
+        }
+
+        .bento-item:hover::before {
+          opacity: 1;
+        }
+      }
+
+      /* Large Featured Item */
+      .bento-large {
+        grid-column: 1 / -1;
+        padding: 2rem;
+        flex-direction: column;
+      }
+
+      @media (min-width: 768px) {
+        .bento-large {
+          grid-column: span 2;
+          grid-row: span 2;
+          padding: 2.5rem;
+        }
+      }
+
+      .bento-content {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        flex: 1;
+      }
+
+      @media (min-width: 768px) {
+        .bento-content {
+          flex-direction: row;
+          align-items: flex-start;
+        }
+      }
+
+      .bento-icon-large {
+        width: 100px;
+        height: 100px;
+        flex-shrink: 0;
+      }
+
+      @media (min-width: 768px) {
+        .bento-icon-large {
+          width: 120px;
+          height: 120px;
+        }
+      }
+
+      .bento-icon-large img {
+        width: 100%;
+        height: 100%;
+        border-radius: 24px;
+        object-fit: cover;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        transition: transform 0.4s ease;
+      }
+
+      @media (hover: hover) {
+        .bento-large:hover .bento-icon-large img {
+          transform: scale(1.05) rotate(-2deg);
+        }
+      }
+
+      .bento-text {
+        flex: 1;
+      }
+
+      .bento-badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 999px;
+        font-size: 0.65rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 0.75rem;
+      }
+
+      .bento-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+
+      @media (min-width: 768px) {
+        .bento-title {
+          font-size: 1.75rem;
+        }
+      }
+
+      .bento-desc {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.9rem;
+        line-height: 1.6;
+        margin-bottom: 1rem;
+      }
+
+      .bento-stats {
+        display: flex;
+        gap: 1rem;
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.5);
+      }
+
+      .bento-arrow {
+        position: absolute;
+        bottom: 1.5rem;
+        right: 1.5rem;
+        width: 40px;
+        height: 40px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      @media (hover: hover) {
+        .bento-large:hover .bento-arrow {
+          background: white;
+          color: black;
+          transform: rotate(45deg);
+        }
+      }
+
+      /* Small Items */
+      .bento-content-small {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex: 1;
+      }
+
+      .bento-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        object-fit: cover;
+        flex-shrink: 0;
+        transition: transform 0.3s ease;
+      }
+
+      @media (hover: hover) {
+        .bento-item:hover .bento-icon {
+          transform: scale(1.1);
+        }
+      }
+
+      .bento-title-sm {
+        font-size: 0.95rem;
+        font-weight: 600;
+        margin-bottom: 0.15rem;
+      }
+
+      .bento-cat {
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.5);
+      }
+
+      .bento-arrow-sm {
+        font-size: 1.25rem;
+        color: rgba(255, 255, 255, 0.3);
+        transition: all 0.3s ease;
+        align-self: center;
+      }
+
+      @media (hover: hover) {
+        .bento-item:hover .bento-arrow-sm {
+          color: white;
+          transform: translateX(4px);
+        }
+      }
+
+      /* Stats Box */
+      .bento-stats-box {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.05) 0%,
+          rgba(255, 255, 255, 0.02) 100%
+        );
+      }
+
+      .stats-number {
+        font-size: 3rem;
+        font-weight: 900;
+        background: linear-gradient(135deg, #fff 0%, #666 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        line-height: 1;
+      }
+
+      .stats-label {
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-top: 0.5rem;
+      }
+
+      .stats-sub {
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.4);
+        margin-top: 0.25rem;
+      }
+      /* Organizer Logos */
+      .organizer-logo-container {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 215, 0, 0.15);
+        border-radius: 0.75rem;
+        padding: 0.75rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        aspect-ratio: 16/10;
+        overflow: hidden;
+      }
+
+      .organizer-logo-container:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 215, 0, 0.4);
+        transform: translateY(-2px);
+      }
+
+      .organizer-logo {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        filter: grayscale(100%) brightness(0.8);
+        opacity: 0.7;
+        transition: all 0.3s ease;
+      }
+
+      .organizer-logo-container:hover .organizer-logo {
+        filter: grayscale(0%) brightness(1);
+        opacity: 1;
+      }
+
+      @media (max-width: 768px) {
+        .organizer-logo-container {
+          padding: 0.5rem;
+        }
+      }
+      /* Bottom fade overlay for 3D model */
+      .model-bottom-fade {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 180px;
+        background: linear-gradient(
+          to bottom,
+          transparent 0%,
+          rgba(5, 5, 5, 0.3) 30%,
+          rgba(5, 5, 5, 0.7) 60%,
+          rgba(5, 5, 5, 0.95) 85%,
+          rgba(5, 5, 5, 1) 100%
+        );
+        pointer-events: none;
+        z-index: 10;
+        border-radius: 0 0 1rem 1rem;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <!-- LOADING SCREEN -->
     <div id="loading-screen">
-        <div class="loading-content">
-            <!-- <div class="loading-logo">Initializing Thrusters</div>
+      <div class="loading-content">
+        <!-- <div class="loading-logo">Initializing Thrusters</div>
             <div class="loading-bar-container">
                 <div class="loading-bar"></div>
             </div> -->
-            <div class="loading-text">Adjusting to orbit..</div>
-            <div class="loading-dots">
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-            </div>
+        <div class="loading-text">Adjusting to orbit..</div>
+        <div class="loading-dots">
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
         </div>
+      </div>
     </div>
 
     <div class="custom-cursor" id="cursor"></div>
     <div id="canvas-container"></div>
 
     <nav class="fixed top-0 w-full p-6 flex justify-between items-center z-50">
-        <div class="text-2xl font-black italic tracking-tighter">Portfolio.</div>
-        <div class="hidden md:flex space-x-8 text-sm uppercase tracking-widest font-medium">
-            <a href="#home" class="hover:text-gray-400 transition">Home</a>
-            <a href="#highlights" class="hover:text-gray-400 transition">Highlights</a>
-            <a href="#services" class="hover:text-gray-400 transition">Services</a>
-            <a href="#about" class="hover:text-gray-400 transition">About</a>
-            <a href="#experience" class="hover:text-gray-400 transition">Experience</a>
-            <a href="#contact" class="hover:text-gray-400 transition">Contact</a>
-        </div>
+      <div class="text-2xl font-black italic tracking-tighter">Portfolio.</div>
+      <div
+        class="hidden md:flex space-x-8 text-sm uppercase tracking-widest font-medium"
+      >
+        <a href="#home" class="hover:text-gray-400 transition">Home</a>
+        <a href="#highlights" class="hover:text-gray-400 transition"
+          >Highlights</a
+        >
+        <a href="#services" class="hover:text-gray-400 transition">Services</a>
+        <a href="#about" class="hover:text-gray-400 transition">About</a>
+        <a href="#experience" class="hover:text-gray-400 transition"
+          >Experience</a
+        >
+        <a href="#contact" class="hover:text-gray-400 transition">Contact</a>
+      </div>
     </nav>
 
     <main>
-        <!-- Hero Section -->
-        <section id="home" class="flex flex-col justify-center items-start max-w-7xl mx-auto">
-            <div class="reveal">
-                <h1 class="font-black leading-none mb-4 text-gradient">
-    <span class="text-3xl md:text-6xl block mb-2">HEY I'M</span>
-    <span class="text-5xl md:text-8xl">AKSHAY C P</span>
-</h1>
-                <p class="text-xl md:text-2xl text-gray-400 max-w-xl">I build whatever captures my interest.
-Some ideas turn into products.
-Some annoyances turn into automation.</p>
-                <div class="mt-8 flex gap-4">
-                    <button class="px-8 py-4 glass hover:bg-white hover:text-black transition-all duration-300 font-bold uppercase tracking-widest text-xs">Projects</button>
-                    <button class="px-8 py-4 border border-white/20 rounded-xl hover:bg-white/10 transition-all duration-300 font-bold uppercase tracking-widest text-xs">Contact</button>
-                </div>
-            </div>
-        </section>
+      <!-- Hero Section -->
+      <section
+        id="home"
+        class="flex flex-col justify-center items-start max-w-7xl mx-auto"
+      >
+        <div class="reveal">
+          <h1 class="font-black leading-none mb-4 text-gradient">
+            <span class="text-3xl md:text-6xl block mb-2">HEY I'M</span>
+            <span class="text-5xl md:text-8xl">AKSHAY C P</span>
+          </h1>
+          <p class="text-xl md:text-2xl text-gray-400 max-w-xl">
+            I build whatever captures my interest. Some ideas turn into
+            products. Some annoyances turn into automation.
+          </p>
+          <div class="mt-8 flex gap-4">
+            <button
+              class="px-8 py-4 glass hover:bg-white hover:text-black transition-all duration-300 font-bold uppercase tracking-widest text-xs"
+            >
+              Projects
+            </button>
+            <button
+              class="px-8 py-4 border border-white/20 rounded-xl hover:bg-white/10 transition-all duration-300 font-bold uppercase tracking-widest text-xs"
+            >
+              Contact
+            </button>
+          </div>
+        </div>
+      </section>
 
-   <section id="about" class="max-w-7xl mx-auto">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-        <!-- 3D Model Viewer -->
-        <div class="glass aspect-square overflow-hidden relative p-0">
+      <section id="about" class="max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <!-- 3D Model Viewer -->
+          <div class="glass aspect-square overflow-hidden relative p-0">
             <model-viewer
-    id="avatar-model"
-    src="https://raw.githubusercontent.com/Akshay-cp7/Glb_host/main/akshay_cp_animated3.glb"
-    alt="Akshay CP 3D Portrait"
-    loading="eager"
-    reveal="auto"
-    autoplay
-    camera-controls
-    disable-zoom
-    touch-action="pan-y"
-    rotation-per-second="30deg"
-    camera-orbit="0deg 90deg 2.5m"
-    min-camera-orbit="auto 90deg 2.5m"
-    max-camera-orbit="auto 90deg 2.5m"
-    exposure="1"
-    shadow-intensity="1"
-    style="width: 100%; height: 100%; min-height: 400px; background: radial-gradient(ellipse at center, rgba(30, 30, 30, 1) 0%, rgba(10, 10, 10, 1) 100%); border-radius: 1rem;"
->
-</model-viewer>
+              id="avatar-model"
+              src="https://raw.githubusercontent.com/Akshay-cp7/Glb_host/main/akshay_cp_animated3.glb"
+              alt="Akshay CP 3D Portrait"
+              loading="eager"
+              reveal="auto"
+              autoplay
+              camera-controls
+              disable-zoom
+              touch-action="pan-y"
+              rotation-per-second="30deg"
+              camera-orbit="0deg 90deg 2.5m"
+              min-camera-orbit="auto 90deg 2.5m"
+              max-camera-orbit="auto 90deg 2.5m"
+              exposure="1"
+              shadow-intensity="1"
+              style="
+                width: 100%;
+                height: 100%;
+                min-height: 400px;
+                background: radial-gradient(
+                  ellipse at center,
+                  rgba(30, 30, 30, 1) 0%,
+                  rgba(10, 10, 10, 1) 100%
+                );
+                border-radius: 1rem;
+              "
+            >
+            </model-viewer>
             <!-- Bottom fade overlay to hide cropped edges -->
             <div class="model-bottom-fade"></div>
-        </div>
-        
-        <!-- Info Side -->
-        <div>
+          </div>
+
+          <!-- Info Side -->
+          <div>
             <div class="space-y-8">
+              <div>
+                <h2 class="text-4xl font-bold mb-4 text-gradient">ABOUT ME</h2>
+                <p class="text-gray-400 text-lg leading-relaxed">
+                  I like building things that sit at the intersection of useful
+                  and interesting. Mobile apps, immersive experiences, tools
+                  that save time all fair game.
+                </p>
+              </div>
+              <div>
+                <span
+                  class="text-xs font-bold tracking-widest text-gray-500 uppercase"
+                  >Technologies</span
+                >
+                <div class="flex flex-wrap gap-2 mt-2">
+                  <span class="px-4 py-2 glass text-xs">FLUTTER</span>
+                  <span class="px-4 py-2 glass text-xs">DART</span>
+                  <span class="px-4 py-2 glass text-xs">FIREBASE</span>
+                  <span class="px-4 py-2 glass text-xs">THREE.JS</span>
+                  <span class="px-4 py-2 glass text-xs">AR/VR</span>
+                </div>
+              </div>
+              <div>
+                <span
+                  class="text-xs font-bold tracking-widest text-gray-500 uppercase"
+                  >Recognition</span
+                >
+                <ul class="mt-2 space-y-2 text-gray-400">
+                  <li>🏆 Tripo 3D AI Contest Winner (2025)</li>
+                  <li>📱 10+ Apps on Google Play Store</li>
+                  <li>🎓 B.Tech Computer Science</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- highlights Section -->
+
+      <section id="highlights" class="max-w-7xl mx-auto">
+        <div class="w-full">
+          <h2 class="text-5xl font-bold mb-12 text-gradient">Highlights</h2>
+          <!-- <p class="text-gray-400 text-lg mb-12 max-w-2xl">Some of my works on google play.</p> -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div
+              class="glass p-4 group cursor-pointer overflow-hidden md:mb-20"
+            >
+              <div
+                class="project-image-container bg-zinc-900 rounded-lg mb-4 overflow-hidden relative"
+              >
+                <img
+                  src="https://blogger.googleusercontent.com/img/a/AVvXsEhSnsiYlX_cFEtohSjvHgWM2bdEv0LlVYq1EhHV3FzBRGZV7Kw3aX-pFRi-swLq5QhXVzPRIqDp28G26Bsrc-50paItPWdLhqPpA6UcOgJLqhugwQrIswpSZeX7xmoKOZOspvvjEBTVzaGPpqDJ09fswfyq39cPR_tgJg3Hxwtu3bAKBC8HbWFFi7kNJrRO"
+                  class="project-image"
+                  alt="project"
+                />
+              </div>
+              <div class="px-4 pb-1 pt-2">
+                <h3 class="text-lg font-bold text-gray-400">
+                  GLB AR Viewer 3D
+                </h3>
+                <p class="text-gray-500 text-xs">
+                  View and place 3D models in real world space using AR.
+                </p>
+              </div>
+            </div>
+            <div
+              class="glass p-4 group cursor-pointer overflow-hidden mt-0 md:mt-20"
+            >
+              <div
+                class="project-image-container bg-zinc-900 rounded-lg mb-4 overflow-hidden relative"
+              >
+                <img
+                  src="https://blogger.googleusercontent.com/img/a/AVvXsEg7PpBDBnUEYDbLJFFTmq8ew9HQPdSl-uL0itb572NbPn2p83oWYvI6Qpo8lHY-wzL51v9_UTD_kkDjWjmWtQzWRBOdGeGuihOArEco2HKZHHQ6PX0PRjMUPH5gW8pMAxRIVrrrf0pL6m39CjwR-WZJQsx6bA0OfxHK_t2EjPg-WYKK6XrskjAFaERaMXcV"
+                  class="project-image"
+                  alt="project"
+                />
+              </div>
+              <div class="px-2 pb-2">
+                <h3 class="text-lg font-bold text-gray-400">GyroAir</h3>
+                <p class="text-gray-500 text-xs">
+                  Turns your phone into an air mouse using gyroscope sensors.
+                </p>
+              </div>
+            </div>
+            <div
+              class="glass p-4 group cursor-pointer overflow-hidden md:mb-20"
+            >
+              <div
+                class="project-image-container bg-zinc-900 rounded-lg mb-4 overflow-hidden relative"
+              >
+                <img
+                  src="https://blogger.googleusercontent.com/img/a/AVvXsEhMJoYxKwJSXJsHuBbu9uLAo7fYd6NTEieCjIzgROPHcYFXfyHX-jUT76F1ig3QQ5ZjhFr7M7GD0gr_r3zaUx_w3X9SQPOIuZuU3-eAkWqCOh-yodZoGYN_2adaQJYY_wd2mf2dGVr-xwMqs3H_Uy4ofDUmCyvTcA2wcrqkSIBelVLbo5KolhH_rz-dZ31h"
+                  class="project-image"
+                  alt="project"
+                />
+              </div>
+              <div class="px-2 pb-2">
+                <h3 class="text-lg font-bold text-gray-400">
+                  +2 Chemistry Salt Analysis
+                </h3>
+                <p class="text-gray-500 text-xs">
+                  Interactive virtual lab for +2 students to conduct
+                  experiments.
+                </p>
+              </div>
+            </div>
+            <div
+              class="glass p-4 group cursor-pointer overflow-hidden mt-0 md:mt-20"
+            >
+              <div
+                class="project-image-container bg-zinc-900 rounded-lg mb-4 overflow-hidden relative"
+              >
+                <img
+                  src="https://blogger.googleusercontent.com/img/a/AVvXsEgjSJb5W24vViaAYSGhBJrmR4LDkOcInmFyC-w9ZeTgOQK1LlwWJDqaQyQ6fWzNOeHtmjOea4yjhZZYR3cmCfPbaqBkxbIp_-qKtMmFiPCrCutiforFiD81eljzclsshoHB0nvm5XIvaWwSiwXfixZMEgM3bFk6wosvSKzRTZ82ZXkwzOQcgxA4O1qOzqhy"
+                  class="project-image"
+                  alt="project"
+                />
+              </div>
+              <div class="px-2 pb-2">
+                <h3 class="text-lg font-bold text-gray-400">
+                  Campus Management Apps
+                </h3>
+                <p class="text-gray-500 text-xs">
+                  Build Apps For College Campus management System
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Award Banner - Minimal -->
+          <div class="award-banner rounded-xl p-6 mt-12 relative">
+            <!-- Sparkle effects -->
+            <div class="sparkle"></div>
+            <div class="sparkle"></div>
+
+            <div
+              class="flex flex-col sm:flex-row items-center justify-between gap-4 relative z-10"
+            >
+              <div class="flex items-center gap-4">
+                <!-- Trophy Icon -->
+                <div class="trophy-glow">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="#ffd700"
+                    class="w-10 h-10"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M5.166 2.621v.858c-1.035.148-2.059.33-3.071.543a.75.75 0 00-.584.859 6.753 6.753 0 006.138 5.6 6.73 6.73 0 002.743 1.346A6.707 6.707 0 019.279 15H8.54c-1.036 0-1.875.84-1.875 1.875V19.5h-.75a2.25 2.25 0 00-2.25 2.25c0 .414.336.75.75.75h15.19a.75.75 0 00.75-.75 2.25 2.25 0 00-2.25-2.25h-.75v-2.625c0-1.036-.84-1.875-1.875-1.875h-.739a6.706 6.706 0 01-1.112-3.173 6.73 6.73 0 002.743-1.347 6.753 6.753 0 006.139-5.6.75.75 0 00-.585-.858 47.077 47.077 0 00-3.07-.543V2.62a.75.75 0 00-.658-.744 49.22 49.22 0 00-6.093-.377c-2.063 0-4.096.128-6.093.377a.75.75 0 00-.657.744zm0 2.629c0 1.196.312 2.32.857 3.294A5.266 5.266 0 013.16 5.337a45.6 45.6 0 012.006-.343v.256zm13.5 0v-.256c.674.1 1.343.214 2.006.343a5.265 5.265 0 01-2.863 3.207 6.72 6.72 0 00.857-3.294z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                </div>
+
                 <div>
-                    <h2 class="text-4xl font-bold mb-4 text-gradient">ABOUT ME</h2>
-                    <p class="text-gray-400 text-lg leading-relaxed">
-I like building things that sit at the intersection of useful 
-and interesting. Mobile apps, immersive experiences, tools that 
-save time all fair game.
+                  <h3 class="text-lg md:text-xl font-bold text-white">
+                    Tripo 3D AI Contest Winner
+                  </h3>
+                  <p class="text-gray-400 text-sm">Global Event • June 2025</p>
+                </div>
+              </div>
 
-                    </p>
-                </div>
-                <div>
-                    <span class="text-xs font-bold tracking-widest text-gray-500 uppercase">Technologies</span>
-                    <div class="flex flex-wrap gap-2 mt-2">
-                        <span class="px-4 py-2 glass text-xs">FLUTTER</span>
-                        <span class="px-4 py-2 glass text-xs">DART</span>
-                        <span class="px-4 py-2 glass text-xs">FIREBASE</span>
-                        <span class="px-4 py-2 glass text-xs">THREE.JS</span>
-                        <span class="px-4 py-2 glass text-xs">AR/VR</span>
-                    </div>
-                </div>
-                <div>
-                    <span class="text-xs font-bold tracking-widest text-gray-500 uppercase">Recognition</span>
-                    <ul class="mt-2 space-y-2 text-gray-400">
-                        <li>🏆 Tripo 3D AI Contest Winner (2025)</li>
-                        <li>📱 10+ Apps on Google Play Store</li>
-                        <li>🎓 B.Tech Computer Science</li>
-                    </ul>
-                </div>
+              <a
+                href="https://www.tripo3d.ai/event/boss-fight-in-multiverse"
+                target="_blank"
+                class="px-5 py-2.5 text-xs font-bold uppercase tracking-widest rounded-lg transition-all duration-300 hover:scale-105"
+                style="
+                  background: linear-gradient(135deg, #ffd700, #ff8c00);
+                  color: #000;
+                "
+              >
+                View →
+              </a>
             </div>
+          </div>
         </div>
-    </div>
-</section>
-<!-- highlights Section -->
+      </section>
 
-<section id="highlights" class="max-w-7xl mx-auto">
-    <div class="w-full">
-        <h2 class="text-5xl font-bold mb-12 text-gradient">Highlights</h2>
-        <!-- <p class="text-gray-400 text-lg mb-12 max-w-2xl">Some of my works on google play.</p> -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div class="glass p-4 group cursor-pointer overflow-hidden md:mb-20">
-                <div class="project-image-container bg-zinc-900 rounded-lg mb-4 overflow-hidden relative">
-                     <img src="https://blogger.googleusercontent.com/img/a/AVvXsEhSnsiYlX_cFEtohSjvHgWM2bdEv0LlVYq1EhHV3FzBRGZV7Kw3aX-pFRi-swLq5QhXVzPRIqDp28G26Bsrc-50paItPWdLhqPpA6UcOgJLqhugwQrIswpSZeX7xmoKOZOspvvjEBTVzaGPpqDJ09fswfyq39cPR_tgJg3Hxwtu3bAKBC8HbWFFi7kNJrRO" class="project-image" alt="project">
-                </div>
-                               <div class="px-4 pb-1 pt-2">
-                    <h3 class="text-lg font-bold text-gray-400">GLB AR Viewer 3D</h3> 
-                    <p class="text-gray-500 text-xs">View and place 3D models in real world space using AR.</p>
-                </div>
+      <!-- Experience Section -->
+      <section id="experience" class="max-w-7xl mx-auto">
+        <div class="w-full">
+          <h2 class="text-5xl font-bold mb-4 text-gradient">EXPERIENCE</h2>
+          <p class="text-gray-400 text-lg mb-12 max-w-2xl">
+            A journey through building real-world mobile products, from
+            institutional ERP systems to independently published apps.
+          </p>
 
-            </div>
-            <div class="glass p-4 group cursor-pointer overflow-hidden mt-0 md:mt-20">
-                <div class="project-image-container bg-zinc-900 rounded-lg mb-4 overflow-hidden relative">
-                    <img src="https://blogger.googleusercontent.com/img/a/AVvXsEg7PpBDBnUEYDbLJFFTmq8ew9HQPdSl-uL0itb572NbPn2p83oWYvI6Qpo8lHY-wzL51v9_UTD_kkDjWjmWtQzWRBOdGeGuihOArEco2HKZHHQ6PX0PRjMUPH5gW8pMAxRIVrrrf0pL6m39CjwR-WZJQsx6bA0OfxHK_t2EjPg-WYKK6XrskjAFaERaMXcV" class="project-image" alt="project">
-                </div>
-                <div class="px-2 pb-2">
-                    <h3 class="text-lg font-bold text-gray-400">GyroAir</h3>
-                    <p class="text-gray-500 text-xs">Turns your phone into an air mouse using gyroscope sensors.</p>
-                </div>
-            </div>
-            <div class="glass p-4 group cursor-pointer overflow-hidden md:mb-20">
-                <div class="project-image-container bg-zinc-900 rounded-lg mb-4 overflow-hidden relative">
-                    <img src="https://blogger.googleusercontent.com/img/a/AVvXsEhMJoYxKwJSXJsHuBbu9uLAo7fYd6NTEieCjIzgROPHcYFXfyHX-jUT76F1ig3QQ5ZjhFr7M7GD0gr_r3zaUx_w3X9SQPOIuZuU3-eAkWqCOh-yodZoGYN_2adaQJYY_wd2mf2dGVr-xwMqs3H_Uy4ofDUmCyvTcA2wcrqkSIBelVLbo5KolhH_rz-dZ31h" class="project-image" alt="project">
-                </div>
-               <div class="px-2 pb-2">
-                    <h3 class="text-lg font-bold text-gray-400">+2 Chemistry Salt Analysis</h3>
-                    <p class="text-gray-500 text-xs">Interactive virtual lab for +2 students to conduct experiments.</p>
-                </div>
-            </div>
-            <div class="glass p-4 group cursor-pointer overflow-hidden mt-0 md:mt-20">
-                <div class="project-image-container bg-zinc-900 rounded-lg mb-4 overflow-hidden relative">
-                    <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgjSJb5W24vViaAYSGhBJrmR4LDkOcInmFyC-w9ZeTgOQK1LlwWJDqaQyQ6fWzNOeHtmjOea4yjhZZYR3cmCfPbaqBkxbIp_-qKtMmFiPCrCutiforFiD81eljzclsshoHB0nvm5XIvaWwSiwXfixZMEgM3bFk6wosvSKzRTZ82ZXkwzOQcgxA4O1qOzqhy" class="project-image" alt="project">
-                </div>
-                 <div class="px-2 pb-2">
-                    <h3 class="text-lg font-bold text-gray-400">Campus Management Apps</h3>
-                    <p class="text-gray-500 text-xs">Build Apps For College Campus management System</p>
-                </div>
-            </div>
-        </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
+            <div class="space-y-12">
+              <div class="relative pl-8">
+                <div class="timeline-line"></div>
+                <div class="timeline-dot"></div>
+                <span
+                  class="text-xs font-bold tracking-widest text-gray-500 uppercase"
+                  >2024 - 2026 - Present</span
+                >
+                <h3 class="text-xl font-bold mt-2">Flutter ERP Developer</h3>
+                <p class="text-gray-400 mt-1">Digital Wing Farook College</p>
+                <p class="text-gray-500 text-sm mt-3 leading-relaxed">
+                  Led the development of mobile applications for college
+                  academic operations, including attendance marking and mark
+                  entry, with seamless integration to the ERP backend APIs.
+                </p>
+              </div>
 
-        <!-- Award Banner -->
-        <!-- Award Banner -->
-<div class="award-banner rounded-xl p-6 mt-12 relative">
-    <!-- Sparkle effects -->
-    <div class="sparkle"></div>
-    <div class="sparkle"></div>
-    <div class="sparkle"></div>
-    <div class="sparkle"></div> 
-    
-    <div class="flex flex-col md:flex-row items-center justify-between gap-4 relative z-10">
-        <div class="flex items-center gap-4">
-            <!-- Trophy Icon -->
-            <div class="trophy-glow">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffd700" class="w-12 h-12">
-                    <path fill-rule="evenodd" d="M5.166 2.621v.858c-1.035.148-2.059.33-3.071.543a.75.75 0 00-.584.859 6.753 6.753 0 006.138 5.6 6.73 6.73 0 002.743 1.346A6.707 6.707 0 019.279 15H8.54c-1.036 0-1.875.84-1.875 1.875V19.5h-.75a2.25 2.25 0 00-2.25 2.25c0 .414.336.75.75.75h15.19a.75.75 0 00.75-.75 2.25 2.25 0 00-2.25-2.25h-.75v-2.625c0-1.036-.84-1.875-1.875-1.875h-.739a6.706 6.706 0 01-1.112-3.173 6.73 6.73 0 002.743-1.347 6.753 6.753 0 006.139-5.6.75.75 0 00-.585-.858 47.077 47.077 0 00-3.07-.543V2.62a.75.75 0 00-.658-.744 49.22 49.22 0 00-6.093-.377c-2.063 0-4.096.128-6.093.377a.75.75 0 00-.657.744zm0 2.629c0 1.196.312 2.32.857 3.294A5.266 5.266 0 013.16 5.337a45.6 45.6 0 012.006-.343v.256zm13.5 0v-.256c.674.1 1.343.214 2.006.343a5.265 5.265 0 01-2.863 3.207 6.72 6.72 0 00.857-3.294z" clip-rule="evenodd" />
-                </svg>
-            </div>
-            
-            <div>
-                <div class="flex items-center gap-2 mb-1">
-                    <span class="text-xs font-bold tracking-widest uppercase" style="color: #ffd700;">Global Event Winner</span>
-                </div>
-                <h3 class="text-lg md:text-xl font-bold text-white">Won Tripo 3D AI Contest</h3>
-                <p class="text-gray-400 text-sm">Event : Boss Fight in Multiverse</p>
-            </div>
-        </div>
-        
-        <div class="flex items-center gap-3">
-            <div class="text-center md:text-right">
-                <div class="flex items-center gap-2 justify-center md:justify-end">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffd700" class="w-4 h-4">
-                        <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffd700" class="w-4 h-4">
-                        <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffd700" class="w-4 h-4">
-                        <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
-                    </svg>
-                </div>
-                <span class="text-xs text-gray-500">June 2025</span>
-            </div>
-            <a href="https://www.tripo3d.ai/event/boss-fight-in-multiverse" target="_blank" class="px-4 py-2 text-xs font-bold uppercase tracking-widest rounded-lg transition-all duration-300 hover:scale-105" style="background: linear-gradient(135deg, #ffd700, #ff8c00); color: #000;">
-                View Event
-            </a>
-        </div>
-    </div>
-
-
-    <!-- Event Organizers Section -->
-<div class="mt-6 pt-6 border-t border-white/10 relative z-10">
-    <p class="text-xs font-bold tracking-widest uppercase text-center mb-4" style="color: rgba(255, 215, 0, 0.7);">Event Organized & Sponsored By</p>
-    <div class="grid grid-cols-3 md:grid-cols-6 gap-4">
-        <div class="organizer-logo-container">
-            <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgNLaWIsL8A9OyWeZfr_ylbAWd-5a5crsqpTjILPZweiW7RyYzZ0JTRU_3hw2sMELJXmtHx6MZlMvYC1hN-ue1tu5WjvrxUbMTw7BpLuh3KP2RDE4M6_KFX3juQetJ0lTwgprnlLEp-CQu6oRObhmfAXR9eeRQlw0fSwqdmKMcDByFwPMMyl0rFRtN1OWCM" alt="Organizer 1" class="organizer-logo">
-        </div>
-        <div class="organizer-logo-container">
-            <img src="https://blogger.googleusercontent.com/img/a/AVvXsEiUY2zsUV1rv8KR4dTc6LmWHbgWqggy7IKXJrwb4Nkw822eujNOhESASoiscHwnR-nJ869_I2pLxCENbxA3ewnaq6Whltx2i-TjmAHma1YlbcBRyxYk-lONn1EekqIdpvcX5WOUn5X0TStyU6DLZGe4S12b4QO5UFlHZ2pymGyvBmv9mMjE7OvMPiKuqPpt" alt="Organizer 2" class="organizer-logo">
-        </div>
-        <div class="organizer-logo-container">
-            <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgTI-5gUoVvR6O0gHif88lTNo27-kCwNGcs_bRxeqrrQX9arW8GQSxbbz0K8WTGjKhYFXBG1f-WKZTGPUkKfXcQsyVdXLaEwyVgnflAOCU4wQwkpWjOmJoENEKhwD3mwc3jv7d__9vm6l104JJDOZOFAaR3xUy3XA25Z9fC-3oNoXSBdt_p1cKF28fKvmz2" alt="Organizer 3" class="organizer-logo">
-        </div>
-        <div class="organizer-logo-container">
-            <img src="https://blogger.googleusercontent.com/img/a/AVvXsEho3d01YeBpzCeH2QHu9LV1uSKcWd99xnenYV0hAe6o1IqjKSy--EloEGMeiJ3pNES1BZCMIVQhy05DvxDiC6F64TyXDBZ3gv4jdr8X88zSSbewRi9jamIIdECKy5-JlfyBJsu-ZEHny8T98rJm63AAPDIDQE_TNkkTaPk4WU-l6W5vuOCZMRmavnuuMXJl" alt="Organizer 4" class="organizer-logo">
-        </div>
-        <div class="organizer-logo-container">
-            <img src="https://blogger.googleusercontent.com/img/a/AVvXsEhnBSs57kjPef_Sy_Q9oeOzhDqz-Uq2tazImCQNNFYoEnuLUxoexkb5C2kCa2wHc7PeuMQqwO02Ce7h47f5bnpEZjkNLITj8DY85Os2UschM8ZvXEBks5lfPqEX6W2guHlTwN6zmZbh435h05LWXfy0naHXYnVmSoQ9v-6JFQYk85OMA3NYyxGwvP9-wgVC" alt="Organizer 5" class="organizer-logo">
-        </div>
-        <div class="organizer-logo-container">
-            <img src="https://blogger.googleusercontent.com/img/a/AVvXsEigPw6WJ_hKeJjSUeDEpxit-QXB4o-B8XRHnL5cbKboovB4mG1ZQ29aRfh3HaBzP8GkAxBP97KQ3j8-e8g8LNLiy_6ND5c0qP_ccSShTHl9tghrXJmo0RBjU_qaLFz5rovkMqSJUd_OJAfyygHslX-3ROLCDqvH0lckAMtvX8k2eV-VpRSH2gJvNerKiUlD" alt="Organizer 6" class="organizer-logo">
-        </div>
-    </div>
-</div>
-</div>
-    </div>
-</section>
-
-          <!-- Experience Section -->
-        <section id="experience" class="max-w-7xl mx-auto">
-            <div class="w-full">
-                <h2 class="text-5xl font-bold mb-4 text-gradient">EXPERIENCE</h2>
-                <p class="text-gray-400 text-lg mb-12 max-w-2xl">A journey through building real-world mobile products, from institutional ERP systems to independently published apps.</p>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
-                    <div class="space-y-12">
-                        <div class="relative pl-8">
-                            <div class="timeline-line"></div>
-                            <div class="timeline-dot"></div>
-                            <span class="text-xs font-bold tracking-widest text-gray-500 uppercase">2024 - 2026 - Present</span>
-                            <h3 class="text-xl font-bold mt-2">Flutter ERP Developer </h3>
-                            <p class="text-gray-400 mt-1">Digital Wing Farook College</p>
-                            <p class="text-gray-500 text-sm mt-3 leading-relaxed">Led the development of mobile applications for college academic operations, including attendance marking and mark entry, with seamless integration to the ERP backend APIs.</p>
-                        </div>
-
-                        <!--                         
+              <!--                         
                         <div class="relative pl-8">
                             <div class="timeline-line"></div>
                             <div class="timeline-dot"></div>
@@ -938,761 +1023,1192 @@ save time all fair game.
                             <p class="text-gray-400 mt-1">Creative Studio</p>
                             <p class="text-gray-500 text-sm mt-3 leading-relaxed">Started my journey in web development, learning the fundamentals and building client websites.</p>
                         </div> -->
-                    </div>
-                    
-                    <div class="glass p-8">
-    <h3 class="text-xl font-bold mb-6">Education</h3>
-    <div class="space-y-6">
+            </div>
 
-           <div class="pb-6">
-        <span class="text-xs font-bold tracking-widest text-gray-500 uppercase">2020 – 2024</span>
-        <h4 class="text-lg font-bold mt-1">B.Tech in Computer Science</h4>
-        <p class="text-gray-400 text-sm">
-            APJ Abdul Kalam Technological University<br>
-            Vedavyasa Institute of Technology, Malappuram
-        <!-- </p>
+            <div class="glass p-8">
+              <h3 class="text-xl font-bold mb-6">Education</h3>
+              <div class="space-y-6">
+                <div class="pb-6">
+                  <span
+                    class="text-xs font-bold tracking-widest text-gray-500 uppercase"
+                    >2020 – 2024</span
+                  >
+                  <h4 class="text-lg font-bold mt-1">
+                    B.Tech in Computer Science
+                  </h4>
+                  <p class="text-gray-400 text-sm">
+                    APJ Abdul Kalam Technological University<br />
+                    Vedavyasa Institute of Technology, Malappuram
+                    <!-- </p>
         <p class="text-gray-500 text-sm mt-1">CGPA: 7.1</p> -->
-    </div>
-    </div>
-</div>
-
+                  </p>
                 </div>
+              </div>
             </div>
-        </section>
-           <!-- Skills Section -->
-        <section id="skills" class="max-w-7xl mx-auto">
-    <div class="w-full">
-        <h2 class="text-5xl font-bold mb-4 text-gradient">SKILLS & EXPERTISE</h2>
-        <p class="text-gray-400 text-lg mb-12 max-w-2xl">
-            Years of hands-on experience building mobile apps, ERP integrations, and interactive experiences.
-        </p>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <div class="space-y-8">
-                <div>
-                    <div class="flex justify-between mb-2">
-                        <span class="text-sm font-bold uppercase tracking-widest">Flutter / Dart</span>
-                        <span class="text-gray-500 text-sm">95%</span>
-                    </div>
-                    <div class="skill-bar">
-                        <div class="skill-progress" style="width: 95%"></div>
-                    </div>
-                </div>
-                <div>
-                    <div class="flex justify-between mb-2">
-                        <span class="text-sm font-bold uppercase tracking-widest">ERP Integration / REST APIs</span>
-                        <span class="text-gray-500 text-sm">90%</span>
-                    </div>
-                    <div class="skill-bar">
-                        <div class="skill-progress" style="width: 90%"></div>
-                    </div>
-                </div>
-                <div>
-                    <div class="flex justify-between mb-2">
-                        <span class="text-sm font-bold uppercase tracking-widest">Firebase / Backend Services</span>
-                        <span class="text-gray-500 text-sm">85%</span>
-                    </div>
-                    <div class="skill-bar">
-                        <div class="skill-progress" style="width: 85%"></div>
-                    </div>
-                </div>
-                <div>
-                    <div class="flex justify-between mb-2">
-                        <span class="text-sm font-bold uppercase tracking-widest">3D / AR </span>
-                        <span class="text-gray-500 text-sm">80%</span>
-                    </div>
-                    <div class="skill-bar">
-                        <div class="skill-progress" style="width: 80%"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="space-y-8">
-                <div>
-                    <div class="flex justify-between mb-2">
-                        <span class="text-sm font-bold uppercase tracking-widest">UI/UX Design</span>
-                        <span class="text-gray-500 text-sm">90%</span>
-                    </div>
-                    <div class="skill-bar">
-                        <div class="skill-progress" style="width: 90%"></div>
-                    </div>
-                </div>
-                <div>
-                    <div class="flex justify-between mb-2">
-                        <span class="text-sm font-bold uppercase tracking-widest">Figma / Adobe Suite</span>
-                        <span class="text-gray-500 text-sm">85%</span>
-                    </div>
-                    <div class="skill-bar">
-                        <div class="skill-progress" style="width: 85%"></div>
-                    </div>
-                </div>
-                <div>
-                    <div class="flex justify-between mb-2">
-                        <span class="text-sm font-bold uppercase tracking-widest">Video Editing / Animations</span>
-                        <span class="text-gray-500 text-sm">80%</span>
-                    </div>
-                    <div class="skill-bar">
-                        <div class="skill-progress" style="width: 80%"></div>
-                    </div>
-                </div>
-                <div>
-                    <div class="flex justify-between mb-2">
-                        <span class="text-sm font-bold uppercase tracking-widest">Version Control / Git</span>
-                        <span class="text-gray-500 text-sm">85%</span>
-                    </div>
-                    <div class="skill-bar">
-                        <div class="skill-progress" style="width: 85%"></div>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
-    </div>
-</section>
+      </section>
+      <!-- Skills Section -->
+      <section id="skills" class="max-w-7xl mx-auto">
+        <div class="w-full">
+          <h2 class="text-5xl font-bold mb-4 text-gradient">
+            SKILLS & EXPERTISE
+          </h2>
+          <p class="text-gray-400 text-lg mb-12 max-w-2xl">
+            Years of hands-on experience building mobile apps, ERP integrations,
+            and interactive experiences.
+          </p>
 
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div class="space-y-8">
+              <div>
+                <div class="flex justify-between mb-2">
+                  <span class="text-sm font-bold uppercase tracking-widest"
+                    >Flutter / Dart</span
+                  >
+                  <span class="text-gray-500 text-sm">95%</span>
+                </div>
+                <div class="skill-bar">
+                  <div class="skill-progress" style="width: 95%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between mb-2">
+                  <span class="text-sm font-bold uppercase tracking-widest"
+                    >ERP Integration / REST APIs</span
+                  >
+                  <span class="text-gray-500 text-sm">90%</span>
+                </div>
+                <div class="skill-bar">
+                  <div class="skill-progress" style="width: 90%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between mb-2">
+                  <span class="text-sm font-bold uppercase tracking-widest"
+                    >Firebase / Backend Services</span
+                  >
+                  <span class="text-gray-500 text-sm">85%</span>
+                </div>
+                <div class="skill-bar">
+                  <div class="skill-progress" style="width: 85%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between mb-2">
+                  <span class="text-sm font-bold uppercase tracking-widest"
+                    >3D / AR
+                  </span>
+                  <span class="text-gray-500 text-sm">80%</span>
+                </div>
+                <div class="skill-bar">
+                  <div class="skill-progress" style="width: 80%"></div>
+                </div>
+              </div>
+            </div>
 
+            <div class="space-y-8">
+              <div>
+                <div class="flex justify-between mb-2">
+                  <span class="text-sm font-bold uppercase tracking-widest"
+                    >UI/UX Design</span
+                  >
+                  <span class="text-gray-500 text-sm">90%</span>
+                </div>
+                <div class="skill-bar">
+                  <div class="skill-progress" style="width: 90%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between mb-2">
+                  <span class="text-sm font-bold uppercase tracking-widest"
+                    >Figma / Adobe Suite</span
+                  >
+                  <span class="text-gray-500 text-sm">85%</span>
+                </div>
+                <div class="skill-bar">
+                  <div class="skill-progress" style="width: 85%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between mb-2">
+                  <span class="text-sm font-bold uppercase tracking-widest"
+                    >Video Editing / Animations</span
+                  >
+                  <span class="text-gray-500 text-sm">80%</span>
+                </div>
+                <div class="skill-bar">
+                  <div class="skill-progress" style="width: 80%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between mb-2">
+                  <span class="text-sm font-bold uppercase tracking-widest"
+                    >Version Control / Git</span
+                  >
+                  <span class="text-gray-500 text-sm">85%</span>
+                </div>
+                <div class="skill-bar">
+                  <div class="skill-progress" style="width: 85%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-    <section id="app-showcase" class="max-w-7xl mx-auto py-20 px-4">
-    <div class="w-full">
-        <div class="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
+      <section id="app-showcase" class="max-w-7xl mx-auto py-20 px-4">
+        <div class="w-full">
+          <div
+            class="flex flex-col md:flex-row md:items-end md:justify-between mb-12"
+          >
             <div>
-               
-                <h3 class="text-3xl md:text-5xl font-bold mt-2 text-gradient">More on Google Play</h3>
+              <h3 class="text-3xl md:text-5xl font-bold mt-2 text-gradient">
+                More on Google Play
+              </h3>
             </div>
-            <a href="#" class="mt-4 md:mt-0 text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-2">
-                View all apps
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
+            <a
+              href="#"
+              class="mt-4 md:mt-0 text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-2"
+            >
+              View all apps
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                />
+              </svg>
             </a>
-        </div>
-        
-        <div class="bento-grid">
+          </div>
+
+          <div class="bento-grid">
             <!-- Featured Large App -->
             <a href="#" class="bento-item bento-large group">
-                <div class="bento-content">
-                    <div class="bento-icon-large">
-                        <img src="https://play-lh.googleusercontent.com/ztGUFbX1zTfSflCSls6GgOSEVqSJKhKY2mYpgIzLjVLQKLFWa8OYxXeLldv7zm_ltIg=s256-rw" alt="Featured App">
-                    </div>
-                    <div class="bento-text">
-                        <span class="bento-badge">Featured</span>
-                        <h4 class="bento-title">Bulk Image Cropper</h4>
-                        <p class="bento-desc">Crop thousands of images in a single click.</p>
-                        <!-- <div class="bento-stats">
+              <div class="bento-content">
+                <div class="bento-icon-large">
+                  <img
+                    src="https://play-lh.googleusercontent.com/ztGUFbX1zTfSflCSls6GgOSEVqSJKhKY2mYpgIzLjVLQKLFWa8OYxXeLldv7zm_ltIg=s256-rw"
+                    alt="Featured App"
+                  />
+                </div>
+                <div class="bento-text">
+                  <span class="bento-badge">Featured</span>
+                  <h4 class="bento-title">Bulk Image Cropper</h4>
+                  <p class="bento-desc">
+                    Crop thousands of images in a single click.
+                  </p>
+                  <!-- <div class="bento-stats">
                             <span>⭐ 4.8</span>
                             <span>10K+ Downloads</span>
                         </div> -->
-                    </div>
                 </div>
-                <div class="bento-arrow">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17L17 7M17 7H7M17 7v10" />
-                    </svg>
-                </div>
+              </div>
+              <div class="bento-arrow">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-6 h-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M7 17L17 7M17 7H7M17 7v10"
+                  />
+                </svg>
+              </div>
             </a>
-            
+
             <!-- Regular Apps -->
             <a href="#" class="bento-item group">
-                <div class="bento-content-small">
-                    <img src="https://play-lh.googleusercontent.com/kXHpGqSh-hXCzvGEvo74h4NowVQmL-3sfxDX-Bj59FYRbpr14l-k1pspge_C88oSHA=s256-rw" alt="App" class="bento-icon">
-                    <div>
-                        <h4 class="bento-title-sm">IMGAC</h4>
-                        <p class="bento-cat">Utilities</p>
-                    </div>
+              <div class="bento-content-small">
+                <img
+                  src="https://play-lh.googleusercontent.com/kXHpGqSh-hXCzvGEvo74h4NowVQmL-3sfxDX-Bj59FYRbpr14l-k1pspge_C88oSHA=s256-rw"
+                  alt="App"
+                  class="bento-icon"
+                />
+                <div>
+                  <h4 class="bento-title-sm">IMGAC</h4>
+                  <p class="bento-cat">Utilities</p>
                 </div>
-                <span class="bento-arrow-sm">→</span>
+              </div>
+              <span class="bento-arrow-sm">→</span>
             </a>
-            
+
             <a href="#" class="bento-item group">
-                <div class="bento-content-small">
-                    <img src="https://play-lh.googleusercontent.com/rhR-LoSxuWCMpp_vxRIV4QTaAdJEUT4fbaL6UMc2lVR5xK0_geqyAvb2NETYJilIyA=s256-rw" alt="App" class="bento-icon">
-                    <div>
-                        <h4 class="bento-title-sm">ID Cards to pdf</h4>
-                        <p class="bento-cat">Utilities</p>
-                    </div>
+              <div class="bento-content-small">
+                <img
+                  src="https://play-lh.googleusercontent.com/rhR-LoSxuWCMpp_vxRIV4QTaAdJEUT4fbaL6UMc2lVR5xK0_geqyAvb2NETYJilIyA=s256-rw"
+                  alt="App"
+                  class="bento-icon"
+                />
+                <div>
+                  <h4 class="bento-title-sm">ID Cards to pdf</h4>
+                  <p class="bento-cat">Utilities</p>
                 </div>
-                <span class="bento-arrow-sm">→</span>
+              </div>
+              <span class="bento-arrow-sm">→</span>
             </a>
-            
+
             <a href="#" class="bento-item group">
-                <div class="bento-content-small">
-                    <img src="https://play-lh.googleusercontent.com/ZSuFpoxR2ri65tfrZQYUWCjzHDB1CZH6IFTldQ9LRdOJPlmfdTSsZh2BTlz8dbbvI27Bw614-ximmFp8ae2AUA=s256-rw" alt="App" class="bento-icon">
-                    <div>
-                        <h4 class="bento-title-sm">Token Number Announcer</h4>
-                        <p class="bento-cat">Productivity</p>
-                    </div>
+              <div class="bento-content-small">
+                <img
+                  src="https://play-lh.googleusercontent.com/ZSuFpoxR2ri65tfrZQYUWCjzHDB1CZH6IFTldQ9LRdOJPlmfdTSsZh2BTlz8dbbvI27Bw614-ximmFp8ae2AUA=s256-rw"
+                  alt="App"
+                  class="bento-icon"
+                />
+                <div>
+                  <h4 class="bento-title-sm">Token Number Announcer</h4>
+                  <p class="bento-cat">Productivity</p>
                 </div>
-                <span class="bento-arrow-sm">→</span>
+              </div>
+              <span class="bento-arrow-sm">→</span>
             </a>
-            
+
             <a href="#" class="bento-item group">
-                <div class="bento-content-small">
-                    <img src="https://play-lh.googleusercontent.com/_s5h-96RNQIwgc5VE-VAOiXR4531sDX0vuwbM8RUvkW6Fzu7HClGZuUhGgFlrXvlmXg=s256-rw" alt="App" class="bento-icon">
-                    <div>
-                        <h4 class="bento-title-sm">Bulk image rotator</h4>
-                        <p class="bento-cat">Tools</p>
-                    </div>
+              <div class="bento-content-small">
+                <img
+                  src="https://play-lh.googleusercontent.com/_s5h-96RNQIwgc5VE-VAOiXR4531sDX0vuwbM8RUvkW6Fzu7HClGZuUhGgFlrXvlmXg=s256-rw"
+                  alt="App"
+                  class="bento-icon"
+                />
+                <div>
+                  <h4 class="bento-title-sm">Bulk image rotator</h4>
+                  <p class="bento-cat">Tools</p>
                 </div>
-                <span class="bento-arrow-sm">→</span>
+              </div>
+              <span class="bento-arrow-sm">→</span>
             </a>
 
             <!-- Stats Box -->
             <div class="bento-item bento-stats-box">
-                <div class="stats-number">10+</div>
-                <div class="stats-label">Published Apps</div>
-                <div class="stats-sub">on Google Play Store</div>
+              <div class="stats-number">10+</div>
+              <div class="stats-label">Published Apps</div>
+              <div class="stats-sub">on Google Play Store</div>
             </div>
+          </div>
         </div>
-    </div>
-</section>
+      </section>
 
-        <!-- Services Section -->
-        <section id="services" class="max-w-7xl mx-auto">
-            <div class="w-full">
-                <h2 class="text-5xl font-bold mb-4 text-gradient">SERVICES</h2>
-                <p class="text-gray-400 text-lg mb-12 max-w-2xl">Specialized solutions tailored to bring your digital vision to life with cutting-edge technology and creative excellence.</p>
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="glass p-6 service-card group hover:bg-white/5 transition-all duration-500 overflow-hidden">
-                        <div class="service-image-container">
-                            <img src="https://blogger.googleusercontent.com/img/a/AVvXsEiPjQNNlQC5DwMbOOyS1Em8wQqEItYWEF_IJla8UO1feLwryzG63uXfX7U3Y9hngiDHDZnVxzQX6g1D3WOYRmHLcXtqcOHYiJWLpbvyub3Z58sxhlGxAjeMPF6ODCxLlH7X5H6zWsI25B5EqqWCsGFfSVhKUY-TX37udk88K3ZiWBJ1lOn6J0OFYCiJI0Oo" alt="Web Development" class="service-image">
-                        </div>
-                        <h3 class="text-xl font-bold mb-3">App Development</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed">Full-stack development with modern frameworks. From responsive landing pages to complex web applications.</p>
-                    </div>
-                    
-                    <div class="glass p-6 service-card group hover:bg-white/5 transition-all duration-500 overflow-hidden">
-                        <div class="service-image-container">
-                            <img src="https://blogger.googleusercontent.com/img/a/AVvXsEjTfkSSSHsALb4ds528eiOffyNYPuMUSKi2XGvmKZzyluLD_OmLxZHj-7HlKlKTG3sK1zri_3n1CCABJD0Ar9OMzBEXkps3S2N6R0ET8kh_tmtWXdszWVxFRg9LsA94TI6-qKdlI49PQsMtsJ8pEN8fufRbLmr7Fn9dHgmojfICf9evHKEq2euQJWHuOaO9" alt="3D & WebGL" class="service-image">
-                        </div>
-                        <h3 class="text-xl font-bold mb-3">3D AR & VR</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed">Immersive 3D experiences using Three.js and WebGL. Interactive visualizations and virtual environments.</p>
-                    </div>
-                    
-                    <div class="glass p-6 service-card group hover:bg-white/5 transition-all duration-500 overflow-hidden">
-                        <div class="service-image-container">
-                            <img src="https://blogger.googleusercontent.com/img/a/AVvXsEhLNq74ne_dibmT0ijfZPCF73lZjNn8_OqOOtRNdLlXUlvmwSvF28ymPZuAqtAc-yWOHnPlbQq7Axxv-5xVFr3Jed8rheFyxZiPfYZag8bsjX24yotWs-OBDLRmfIhYYhCuVQoRVYX9ai_js3GhFbsTdiIMZ_3HflG7dm_Sm-c3sIda4AQeUXaijZyKtM9n" alt="UI/UX Design" class="service-image">
-                        </div>
-                        <h3 class="text-xl font-bold mb-3">UI/UX Design</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed">User-centered design with focus on aesthetics and usability. Prototyping and design systems.</p>
-                    </div>
-                    
-                    <div class="glass p-6 service-card group hover:bg-white/5 transition-all duration-500 overflow-hidden">
-                        <div class="service-image-container">
-                            <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgZiL4WxydiKJ8REBvX5UPbz35ZYUEJgm04C5lTEcMOn69pmJ5wiVJxl6blakHzqzaAAoUhDqj6QbiJHM0ObOkhYH2l4NV4oGtAWtjVyvtv7YPqIvOW2MRmDPfvKSirOXCe2XtGnFxbxiCI_N0KzlahF2KsbaCH7QZX5ouTrhVUfLs2EFfTWmGtW1A8Fqqk" alt="Performance Optimization" class="service-image">
-                        </div>
-                        <h3 class="text-xl font-bold mb-3">Performance Optimization</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed">Speed up your existing applications. Core Web Vitals optimization and code auditing.</p>
-                    </div>
-                    
-                    <div class="glass p-6 service-card group hover:bg-white/5 transition-all duration-500 overflow-hidden">
-                        <div class="service-image-container">
-                            <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgyna81PbevAw6A6AhaFxYRYHQCY6kxWgcmqWwvcIhrRnWXLAEQjcHTDSf7By4FcNFd7jMql77KBgR5jq9gki6IeGmPsoAxkHiEGVkso14Fqyfsf-hWMKA8KLEo290NFhkROk_QZ5ktllKyupbB--nhm7k38L3X6KOBbO0-AxQyxeDxpnQnHVqdtj-m3gc-" alt="Responsive Design" class="service-image">
-                        </div>
-                        <h3 class="text-xl font-bold mb-3">Responsive Design</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed">Mobile-first approach ensuring seamless experience across all devices and screen sizes.</p>
-                    </div>
-                    
-                    <div class="glass p-6 service-card group hover:bg-white/5 transition-all duration-500 overflow-hidden">
-                        <div class="service-image-container">
-                            <img src="https://blogger.googleusercontent.com/img/a/AVvXsEjfSuiS4rnk-qsUFeWC9SYHiGLwWWnHWpUkKn8aSrZtN7iTOs9updslqXX1vs7FAc7T1whp8JFAU5vrJ34_H036XWdCc5N3xj8FlSd0LHXQonaSWgq3RthBEXIUn9sPVj7aUVrnetmEgUAPmJRHhsJb6aLczOlx7Z7DMOHqvT7lC_bdTaR3ctBd1Q12thu5" alt="Creative Animation" class="service-image">
-                        </div>
-                        <h3 class="text-xl font-bold mb-3">Video & Animation</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed">Motion design and micro-interactions that bring interfaces to life using GSAP and CSS animations.</p>
-                    </div>
-                </div>
+      <!-- Services Section -->
+      <section id="services" class="max-w-7xl mx-auto">
+        <div class="w-full">
+          <h2 class="text-5xl font-bold mb-4 text-gradient">SERVICES</h2>
+          <p class="text-gray-400 text-lg mb-12 max-w-2xl">
+            Specialized solutions tailored to bring your digital vision to life
+            with cutting-edge technology and creative excellence.
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div
+              class="glass p-6 service-card group hover:bg-white/5 transition-all duration-500 overflow-hidden"
+            >
+              <div class="service-image-container">
+                <img
+                  src="https://blogger.googleusercontent.com/img/a/AVvXsEiPjQNNlQC5DwMbOOyS1Em8wQqEItYWEF_IJla8UO1feLwryzG63uXfX7U3Y9hngiDHDZnVxzQX6g1D3WOYRmHLcXtqcOHYiJWLpbvyub3Z58sxhlGxAjeMPF6ODCxLlH7X5H6zWsI25B5EqqWCsGFfSVhKUY-TX37udk88K3ZiWBJ1lOn6J0OFYCiJI0Oo"
+                  alt="Web Development"
+                  class="service-image"
+                />
+              </div>
+              <h3 class="text-xl font-bold mb-3">App Development</h3>
+              <p class="text-gray-400 text-sm leading-relaxed">
+                Full-stack development with modern frameworks. From responsive
+                landing pages to complex web applications.
+              </p>
             </div>
-        </section>
 
-
-
-        <!-- Testimonials Section -->
-        <section id="testimonials" class="max-w-7xl mx-auto">
-            <div class="w-full">
-                <h2 class="text-5xl font-bold mb-4 text-gradient">TESTIMONIALS</h2>
-                <p class="text-gray-400 text-lg mb-12 max-w-2xl">What clients and colleagues say about working together.</p>
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="glass p-8">
-                        <div class="flex items-center gap-1 mb-4">
-                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                        </div>
-                        <p class="text-gray-400 text-sm leading-relaxed mb-6">"Exceptional work! The 3D experience they created for our product launch exceeded all expectations. Truly a master of their craft."</p>
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-blue-500"></div>
-                            <div>
-                                <p class="font-bold text-sm">Sarah Chen</p>
-                                <p class="text-gray-500 text-xs">CEO, TechVision</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="glass p-8">
-                        <div class="flex items-center gap-1 mb-4">
-                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                        </div>
-                        <p class="text-gray-400 text-sm leading-relaxed mb-6">"Working with OSM was a game-changer for our brand. The attention to detail and creative solutions transformed our online presence."</p>
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-red-500"></div>
-                            <div>
-                                <p class="font-bold text-sm">Marcus Johnson</p>
-                                <p class="text-gray-500 text-xs">Creative Director, Studio M</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="glass p-8">
-                        <div class="flex items-center gap-1 mb-4">
-                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                        </div>
-                        <p class="text-gray-400 text-sm leading-relaxed mb-6">"Incredible talent and professionalism. Delivered ahead of schedule with results that surpassed our initial vision. Highly recommend!"</p>
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-teal-500"></div>
-                            <div>
-                                <p class="font-bold text-sm">Emily Rodriguez</p>
-                                <p class="text-gray-500 text-xs">Founder, GreenTech</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div
+              class="glass p-6 service-card group hover:bg-white/5 transition-all duration-500 overflow-hidden"
+            >
+              <div class="service-image-container">
+                <img
+                  src="https://blogger.googleusercontent.com/img/a/AVvXsEjTfkSSSHsALb4ds528eiOffyNYPuMUSKi2XGvmKZzyluLD_OmLxZHj-7HlKlKTG3sK1zri_3n1CCABJD0Ar9OMzBEXkps3S2N6R0ET8kh_tmtWXdszWVxFRg9LsA94TI6-qKdlI49PQsMtsJ8pEN8fufRbLmr7Fn9dHgmojfICf9evHKEq2euQJWHuOaO9"
+                  alt="3D & WebGL"
+                  class="service-image"
+                />
+              </div>
+              <h3 class="text-xl font-bold mb-3">3D AR & VR</h3>
+              <p class="text-gray-400 text-sm leading-relaxed">
+                Immersive 3D experiences using Three.js and WebGL. Interactive
+                visualizations and virtual environments.
+              </p>
             </div>
-        </section>
 
-        <!-- Contact Section -->
-        <section id="contact" class="max-w-7xl mx-auto">
-            <div class="w-full">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                    <div>
-                        <h2 class="text-5xl font-bold mb-4 text-gradient">LET'S CREATE<br>TOGETHER</h2>
-                        <p class="text-gray-400 text-lg mb-8 max-w-md">Have a project in mind? Let's discuss how we can bring your vision to life with cutting-edge technology.</p>
-                        
-                        <div class="space-y-6">
-                            <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 glass flex items-center justify-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-                                    </svg>
-                                </div>
-                                <div>
-                                    <p class="text-xs font-bold tracking-widest text-gray-500 uppercase">Email</p>
-                                    <p class="text-white">hello@osmportfolio.com</p>
-                                </div>
-                            </div>
-                            
-                            <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 glass flex items-center justify-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-                                    </svg>
-                                </div>
-                                <div>
-                                    <p class="text-xs font-bold tracking-widest text-gray-500 uppercase">Location</p>
-                                    <p class="text-white">San Francisco, CA</p>
-                                </div>
-                            </div>
-                            
-                            <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 glass flex items-center justify-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                </div>
-                                <div>
-                                    <p class="text-xs font-bold tracking-widest text-gray-500 uppercase">Availability</p>
-                                    <p class="text-white">Open for freelance projects</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="flex gap-4 mt-8">
-                            <a href="#" class="w-12 h-12 glass flex items-center justify-center hover:bg-white/10 transition-all">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                            </a>
-                            <a href="#" class="w-12 h-12 glass flex items-center justify-center hover:bg-white/10 transition-all">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-                            </a>
-                            <a href="#" class="w-12 h-12 glass flex items-center justify-center hover:bg-white/10 transition-all">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417a9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
-                            </a>
-                            <a href="#" class="w-12 h-12 glass flex items-center justify-center hover:bg-white/10 transition-all">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.6.113.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <div class="glass p-8">
-                        <form class="space-y-6">
-                            <div>
-                                <label class="text-xs font-bold tracking-widest text-gray-500 uppercase block mb-2">Name</label>
-                                <input type="text" class="w-full bg-transparent border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-white/30 transition-all" placeholder="John Doe">
-                            </div>
-                            <div>
-                                <label class="text-xs font-bold tracking-widest text-gray-500 uppercase block mb-2">Email</label>
-                                <input type="email" class="w-full bg-transparent border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-white/30 transition-all" placeholder="john@example.com">
-                            </div>
-                            <div>
-                                <label class="text-xs font-bold tracking-widest text-gray-500 uppercase block mb-2">Project Type</label>
-                                <select class="w-full bg-transparent border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-white/30 transition-all">
-                                    <option value="" class="bg-zinc-900">Select a service</option>
-                                    <option value="web" class="bg-zinc-900">Web Development</option>
-                                    <option value="3d" class="bg-zinc-900">3D & WebGL</option>
-                                    <option value="design" class="bg-zinc-900">UI/UX Design</option>
-                                    <option value="other" class="bg-zinc-900">Other</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="text-xs font-bold tracking-widest text-gray-500 uppercase block mb-2">Message</label>
-                                <textarea rows="4" class="w-full bg-transparent border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-white/30 transition-all resize-none" placeholder="Tell me about your project..."></textarea>
-                            </div>
-                            <button type="submit" class="w-full px-8 py-4 bg-white text-black font-bold uppercase tracking-widest text-xs hover:bg-gray-200 transition-all duration-300 rounded-lg">Send Message</button>
-                        </form>
-                    </div>
-                </div>
+            <div
+              class="glass p-6 service-card group hover:bg-white/5 transition-all duration-500 overflow-hidden"
+            >
+              <div class="service-image-container">
+                <img
+                  src="https://blogger.googleusercontent.com/img/a/AVvXsEhLNq74ne_dibmT0ijfZPCF73lZjNn8_OqOOtRNdLlXUlvmwSvF28ymPZuAqtAc-yWOHnPlbQq7Axxv-5xVFr3Jed8rheFyxZiPfYZag8bsjX24yotWs-OBDLRmfIhYYhCuVQoRVYX9ai_js3GhFbsTdiIMZ_3HflG7dm_Sm-c3sIda4AQeUXaijZyKtM9n"
+                  alt="UI/UX Design"
+                  class="service-image"
+                />
+              </div>
+              <h3 class="text-xl font-bold mb-3">UI/UX Design</h3>
+              <p class="text-gray-400 text-sm leading-relaxed">
+                User-centered design with focus on aesthetics and usability.
+                Prototyping and design systems.
+              </p>
             </div>
-        </section>
+
+            <div
+              class="glass p-6 service-card group hover:bg-white/5 transition-all duration-500 overflow-hidden"
+            >
+              <div class="service-image-container">
+                <img
+                  src="https://blogger.googleusercontent.com/img/a/AVvXsEgZiL4WxydiKJ8REBvX5UPbz35ZYUEJgm04C5lTEcMOn69pmJ5wiVJxl6blakHzqzaAAoUhDqj6QbiJHM0ObOkhYH2l4NV4oGtAWtjVyvtv7YPqIvOW2MRmDPfvKSirOXCe2XtGnFxbxiCI_N0KzlahF2KsbaCH7QZX5ouTrhVUfLs2EFfTWmGtW1A8Fqqk"
+                  alt="Performance Optimization"
+                  class="service-image"
+                />
+              </div>
+              <h3 class="text-xl font-bold mb-3">Performance Optimization</h3>
+              <p class="text-gray-400 text-sm leading-relaxed">
+                Speed up your existing applications. Core Web Vitals
+                optimization and code auditing.
+              </p>
+            </div>
+
+            <div
+              class="glass p-6 service-card group hover:bg-white/5 transition-all duration-500 overflow-hidden"
+            >
+              <div class="service-image-container">
+                <img
+                  src="https://blogger.googleusercontent.com/img/a/AVvXsEgyna81PbevAw6A6AhaFxYRYHQCY6kxWgcmqWwvcIhrRnWXLAEQjcHTDSf7By4FcNFd7jMql77KBgR5jq9gki6IeGmPsoAxkHiEGVkso14Fqyfsf-hWMKA8KLEo290NFhkROk_QZ5ktllKyupbB--nhm7k38L3X6KOBbO0-AxQyxeDxpnQnHVqdtj-m3gc-"
+                  alt="Responsive Design"
+                  class="service-image"
+                />
+              </div>
+              <h3 class="text-xl font-bold mb-3">Responsive Design</h3>
+              <p class="text-gray-400 text-sm leading-relaxed">
+                Mobile-first approach ensuring seamless experience across all
+                devices and screen sizes.
+              </p>
+            </div>
+
+            <div
+              class="glass p-6 service-card group hover:bg-white/5 transition-all duration-500 overflow-hidden"
+            >
+              <div class="service-image-container">
+                <img
+                  src="https://blogger.googleusercontent.com/img/a/AVvXsEjfSuiS4rnk-qsUFeWC9SYHiGLwWWnHWpUkKn8aSrZtN7iTOs9updslqXX1vs7FAc7T1whp8JFAU5vrJ34_H036XWdCc5N3xj8FlSd0LHXQonaSWgq3RthBEXIUn9sPVj7aUVrnetmEgUAPmJRHhsJb6aLczOlx7Z7DMOHqvT7lC_bdTaR3ctBd1Q12thu5"
+                  alt="Creative Animation"
+                  class="service-image"
+                />
+              </div>
+              <h3 class="text-xl font-bold mb-3">Video & Animation</h3>
+              <p class="text-gray-400 text-sm leading-relaxed">
+                Motion design and micro-interactions that bring interfaces to
+                life using GSAP and CSS animations.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Testimonials Section -->
+      <section id="testimonials" class="max-w-7xl mx-auto">
+        <div class="w-full">
+          <h2 class="text-5xl font-bold mb-4 text-gradient">TESTIMONIALS</h2>
+          <p class="text-gray-400 text-lg mb-12 max-w-2xl">
+            What clients and colleagues say about working together.
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="glass p-8">
+              <div class="flex items-center gap-1 mb-4">
+                <svg
+                  class="w-5 h-5 text-yellow-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  />
+                </svg>
+                <svg
+                  class="w-5 h-5 text-yellow-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  />
+                </svg>
+                <svg
+                  class="w-5 h-5 text-yellow-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  />
+                </svg>
+                <svg
+                  class="w-5 h-5 text-yellow-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  />
+                </svg>
+                <svg
+                  class="w-5 h-5 text-yellow-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  />
+                </svg>
+              </div>
+              <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                "Exceptional work! The 3D experience they created for our
+                product launch exceeded all expectations. Truly a master of
+                their craft."
+              </p>
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-blue-500"
+                ></div>
+                <div>
+                  <p class="font-bold text-sm">Sarah Chen</p>
+                  <p class="text-gray-500 text-xs">CEO, TechVision</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="glass p-8">
+              <div class="flex items-center gap-1 mb-4">
+                <svg
+                  class="w-5 h-5 text-yellow-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  />
+                </svg>
+                <svg
+                  class="w-5 h-5 text-yellow-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  />
+                </svg>
+                <svg
+                  class="w-5 h-5 text-yellow-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  />
+                </svg>
+                <svg
+                  class="w-5 h-5 text-yellow-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  />
+                </svg>
+                <svg
+                  class="w-5 h-5 text-yellow-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  />
+                </svg>
+              </div>
+              <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                "Working with OSM was a game-changer for our brand. The
+                attention to detail and creative solutions transformed our
+                online presence."
+              </p>
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-red-500"
+                ></div>
+                <div>
+                  <p class="font-bold text-sm">Marcus Johnson</p>
+                  <p class="text-gray-500 text-xs">
+                    Creative Director, Studio M
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="glass p-8">
+              <div class="flex items-center gap-1 mb-4">
+                <svg
+                  class="w-5 h-5 text-yellow-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  />
+                </svg>
+                <svg
+                  class="w-5 h-5 text-yellow-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  />
+                </svg>
+                <svg
+                  class="w-5 h-5 text-yellow-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  />
+                </svg>
+                <svg
+                  class="w-5 h-5 text-yellow-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  />
+                </svg>
+                <svg
+                  class="w-5 h-5 text-yellow-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  />
+                </svg>
+              </div>
+              <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                "Incredible talent and professionalism. Delivered ahead of
+                schedule with results that surpassed our initial vision. Highly
+                recommend!"
+              </p>
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-teal-500"
+                ></div>
+                <div>
+                  <p class="font-bold text-sm">Emily Rodriguez</p>
+                  <p class="text-gray-500 text-xs">Founder, GreenTech</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact Section -->
+      <section id="contact" class="max-w-7xl mx-auto">
+        <div class="w-full">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div>
+              <h2 class="text-5xl font-bold mb-4 text-gradient">
+                LET'S CREATE<br />TOGETHER
+              </h2>
+              <p class="text-gray-400 text-lg mb-8 max-w-md">
+                Have a project in mind? Let's discuss how we can bring your
+                vision to life with cutting-edge technology.
+              </p>
+
+              <div class="space-y-6">
+                <div class="flex items-center gap-4">
+                  <div class="w-12 h-12 glass flex items-center justify-center">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="w-5 h-5"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <p
+                      class="text-xs font-bold tracking-widest text-gray-500 uppercase"
+                    >
+                      Email
+                    </p>
+                    <p class="text-white">hello@osmportfolio.com</p>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-4">
+                  <div class="w-12 h-12 glass flex items-center justify-center">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="w-5 h-5"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <p
+                      class="text-xs font-bold tracking-widest text-gray-500 uppercase"
+                    >
+                      Location
+                    </p>
+                    <p class="text-white">San Francisco, CA</p>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-4">
+                  <div class="w-12 h-12 glass flex items-center justify-center">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="w-5 h-5"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <p
+                      class="text-xs font-bold tracking-widest text-gray-500 uppercase"
+                    >
+                      Availability
+                    </p>
+                    <p class="text-white">Open for freelance projects</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex gap-4 mt-8">
+                <a
+                  href="#"
+                  class="w-12 h-12 glass flex items-center justify-center hover:bg-white/10 transition-all"
+                >
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                      d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+                    />
+                  </svg>
+                </a>
+                <a
+                  href="#"
+                  class="w-12 h-12 glass flex items-center justify-center hover:bg-white/10 transition-all"
+                >
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                      d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"
+                    />
+                  </svg>
+                </a>
+                <a
+                  href="#"
+                  class="w-12 h-12 glass flex items-center justify-center hover:bg-white/10 transition-all"
+                >
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                      d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417a9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"
+                    />
+                  </svg>
+                </a>
+                <a
+                  href="#"
+                  class="w-12 h-12 glass flex items-center justify-center hover:bg-white/10 transition-all"
+                >
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                      d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.6.113.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"
+                    />
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+            <div class="glass p-8">
+              <form class="space-y-6">
+                <div>
+                  <label
+                    class="text-xs font-bold tracking-widest text-gray-500 uppercase block mb-2"
+                    >Name</label
+                  >
+                  <input
+                    type="text"
+                    class="w-full bg-transparent border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-white/30 transition-all"
+                    placeholder="John Doe"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="text-xs font-bold tracking-widest text-gray-500 uppercase block mb-2"
+                    >Email</label
+                  >
+                  <input
+                    type="email"
+                    class="w-full bg-transparent border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-white/30 transition-all"
+                    placeholder="john@example.com"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="text-xs font-bold tracking-widest text-gray-500 uppercase block mb-2"
+                    >Project Type</label
+                  >
+                  <select
+                    class="w-full bg-transparent border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-white/30 transition-all"
+                  >
+                    <option value="" class="bg-zinc-900">
+                      Select a service
+                    </option>
+                    <option value="web" class="bg-zinc-900">
+                      Web Development
+                    </option>
+                    <option value="3d" class="bg-zinc-900">3D & WebGL</option>
+                    <option value="design" class="bg-zinc-900">
+                      UI/UX Design
+                    </option>
+                    <option value="other" class="bg-zinc-900">Other</option>
+                  </select>
+                </div>
+                <div>
+                  <label
+                    class="text-xs font-bold tracking-widest text-gray-500 uppercase block mb-2"
+                    >Message</label
+                  >
+                  <textarea
+                    rows="4"
+                    class="w-full bg-transparent border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-white/30 transition-all resize-none"
+                    placeholder="Tell me about your project..."
+                  ></textarea>
+                </div>
+                <button
+                  type="submit"
+                  class="w-full px-8 py-4 bg-white text-black font-bold uppercase tracking-widest text-xs hover:bg-gray-200 transition-all duration-300 rounded-lg"
+                >
+                  Send Message
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
 
-    <footer class="p-12 text-center text-gray-600 text-sm tracking-widest border-t border-white/5">
-        &copy; 2024 OSM PORTFOLIO. MADE WITH THREE.JS & PASSION.
+    <footer
+      class="p-12 text-center text-gray-600 text-sm tracking-widest border-t border-white/5"
+    >
+      &copy; 2024 OSM PORTFOLIO. MADE WITH THREE.JS & PASSION.
     </footer>
 
     <script>
-// --- LOADING STATE TRACKING ---
-let threeJsReady = false;
-let modelViewerReady = false;
-let loadingScreenHidden = false;
+      // --- LOADING STATE TRACKING ---
+      let threeJsReady = false;
+      let modelViewerReady = false;
+      let loadingScreenHidden = false;
 
-function checkAllLoaded() {
-    if (threeJsReady && modelViewerReady && !loadingScreenHidden) {
-        hideLoadingScreen();
-    }
-}
-
-// Fallback: Hide loading screen after max 8 seconds even if model fails
-setTimeout(() => {
-    if (!loadingScreenHidden) {
-        console.log('Fallback: Hiding loading screen after timeout');
-        hideLoadingScreen();
-    }
-}, 8000);
-
-// --- LOADING SCREEN ---
-function hideLoadingScreen() {
-    if (loadingScreenHidden) return;
-    loadingScreenHidden = true;
-    
-    const loadingScreen = document.getElementById('loading-screen');
-    loadingScreen.classList.add('loading-hidden');
-    setTimeout(() => {
-        loadingScreen.style.display = 'none';
-    }, 1000);
-}
-
-// --- MODEL-VIEWER PRELOADING ---
-function initModelViewer() {
-    const modelViewer = document.getElementById('avatar-model');
-    
-    if (!modelViewer) {
-        console.log('Model viewer not found, marking as ready');
-        modelViewerReady = true;
-        checkAllLoaded();
-        return;
-    }
-    
-    // Check if already loaded
-    if (modelViewer.loaded) {
-        console.log('Model already loaded');
-        modelViewerReady = true;
-        checkAllLoaded();
-        return;
-    }
-    
-    // Listen for load event
-    modelViewer.addEventListener('load', () => {
-        console.log('3D Model loaded successfully');
-        modelViewerReady = true;
-        checkAllLoaded();
-    });
-    
-    // Listen for error
-    modelViewer.addEventListener('error', (e) => {
-        console.error('Model loading error:', e);
-        modelViewerReady = true; // Mark as ready anyway to not block the site
-        checkAllLoaded();
-    });
-    
-    // Progress tracking (optional - for loading bar)
-    modelViewer.addEventListener('progress', (e) => {
-        const progress = e.detail.totalProgress * 100;
-        console.log(`Model loading: ${progress.toFixed(0)}%`);
-        // You could update a loading bar here
-    });
-}
-
-// --- THREE.JS SCENE SETUP ---
-let scene, camera, renderer, particles, torus;
-let mouseX = 0, mouseY = 0;
-
-// Background (particles) rotation state
-let bgBaseRotX = 0;
-let bgBaseRotY = 0;
-let bgMouseRotX = 0;
-let bgMouseRotY = 0;
-
-// Torus rotation state
-let torusBaseRotX = 0;
-let torusBaseRotY = 0;
-let torusMouseRotX = 0;
-let torusMouseRotY = 0;
-
-// Smooth camera scrolling
-let targetCameraZ = 5;
-let currentCameraZ = 5;
-let currentScrollY = 0;
-let targetScrollY = 0;
-
-// Detect mobile
-const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
-    || window.innerWidth < 768;
-
-function initThree() {
-    scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.z = 5;
-
-    renderer = new THREE.WebGLRenderer({ antialias: !isMobile, alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(isMobile ? Math.min(window.devicePixelRatio, 1.5) : Math.min(window.devicePixelRatio, 2));
-    document.getElementById('canvas-container').appendChild(renderer.domElement);
-
-    // Create Sparkles (Particles)
-    const particlesGeometry = new THREE.BufferGeometry();
-    const count = isMobile ? 1500 : 3000;
-    const posArray = new Float32Array(count * 3);
-
-    for(let i = 0; i < count * 3; i++) {
-        posArray[i] = (Math.random() - 0.5) * 15;
-    }
-
-    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-    
-    const particlesMaterial = new THREE.PointsMaterial({
-        size: isMobile ? 0.008 : 0.005,
-        color: 0xffffff,
-        transparent: true,
-        opacity: 0.8,
-        blending: THREE.AdditiveBlending
-    });
-
-    particles = new THREE.Points(particlesGeometry, particlesMaterial);
-    scene.add(particles);
-
-    // Create Central Object
-    const segments = isMobile ? 80 : 150;
-    const geometry = new THREE.TorusKnotGeometry(1.3, 0.4, segments, 20);
-    const material = new THREE.MeshStandardMaterial({ 
-        color: 0x222222,
-        roughness: 0.1,
-        metalness: 1,
-        wireframe: true
-    });
-    torus = new THREE.Mesh(geometry, material);
-    scene.add(torus);
-
-    // Lights
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-    scene.add(ambientLight);
-
-    const pointLight = new THREE.PointLight(0x0066ff, 2);
-    pointLight.position.set(2, 3, 4);
-    scene.add(pointLight);
-
-    const pointLight2 = new THREE.PointLight(0xff0066, 2);
-    pointLight2.position.set(-2, -3, 4);
-    scene.add(pointLight2);
-
-    animate();
-    
-    // Mark Three.js as ready
-    console.log('Three.js scene ready');
-    threeJsReady = true;
-    checkAllLoaded();
-}
-
-function animate() {
-    requestAnimationFrame(animate);
-
-    // === PARTICLES (Background) ===
-    bgBaseRotY += 0.001;
-    bgBaseRotX += 0.0005;
-
-    const targetBgY = mouseX * 0.25;
-    const targetBgX = -mouseY * 0.18;
-    bgMouseRotY += (targetBgY - bgMouseRotY) * 0.06;
-    bgMouseRotX += (targetBgX - bgMouseRotX) * 0.06;
-
-    if (particles) {
-        particles.rotation.y = bgBaseRotY + bgMouseRotY;
-        particles.rotation.x = bgBaseRotX + bgMouseRotX;
-    }
-
-    // === TORUS (Central Object) ===
-    if (torus) {
-        torusBaseRotX += 0.005;
-        torusBaseRotY += 0.005;
-        
-        const targetMouseRotX = mouseY * 0.5;
-        const targetMouseRotY = mouseX * 0.5;
-        
-        torusMouseRotX += (targetMouseRotX - torusMouseRotX) * 0.08;
-        torusMouseRotY += (targetMouseRotY - torusMouseRotY) * 0.08;
-        
-        torus.rotation.x = torusBaseRotX + torusMouseRotX;
-        torus.rotation.y = torusBaseRotY + torusMouseRotY;
-    }
-
-    // === CAMERA SCROLL - SMOOTH ===
-    currentScrollY += (targetScrollY - currentScrollY) * 0.08;
-    targetCameraZ = 5 + currentScrollY * 0.001;
-    currentCameraZ += (targetCameraZ - currentCameraZ) * 0.05;
-    camera.position.z = currentCameraZ;
-    
-    renderer.render(scene, camera);
-}
-
-// --- SCROLL TRACKING ---
-window.addEventListener('scroll', () => {
-    targetScrollY = window.scrollY;
-}, { passive: true });
-
-// --- MOUSE TRACKING (Desktop only) ---
-window.addEventListener('mousemove', (e) => {
-    mouseX = (e.clientX / window.innerWidth) - 0.5;
-    mouseY = (e.clientY / window.innerHeight) - 0.5;
-
-    gsap.to('#cursor', {
-        x: e.clientX - 10,
-        y: e.clientY - 10,
-        duration: 0.2
-    });
-});
-
-// --- TOUCH TRACKING (Mobile) ---
-if (isMobile) {
-    window.addEventListener('touchmove', (e) => {
-        if (e.touches.length > 0) {
-            mouseX = (e.touches[0].clientX / window.innerWidth) - 0.5;
-            mouseY = (e.touches[0].clientY / window.innerHeight) - 0.5;
+      function checkAllLoaded() {
+        if (threeJsReady && modelViewerReady && !loadingScreenHidden) {
+          hideLoadingScreen();
         }
-    }, { passive: true });
-    
-    window.addEventListener('touchend', () => {
-        mouseX = 0;
+      }
+
+      // Fallback: Hide loading screen after max 8 seconds even if model fails
+      setTimeout(() => {
+        if (!loadingScreenHidden) {
+          console.log("Fallback: Hiding loading screen after timeout");
+          hideLoadingScreen();
+        }
+      }, 8000);
+
+      // --- LOADING SCREEN ---
+      function hideLoadingScreen() {
+        if (loadingScreenHidden) return;
+        loadingScreenHidden = true;
+
+        const loadingScreen = document.getElementById("loading-screen");
+        loadingScreen.classList.add("loading-hidden");
+        setTimeout(() => {
+          loadingScreen.style.display = "none";
+        }, 1000);
+      }
+
+      // --- MODEL-VIEWER PRELOADING ---
+      function initModelViewer() {
+        const modelViewer = document.getElementById("avatar-model");
+
+        if (!modelViewer) {
+          console.log("Model viewer not found, marking as ready");
+          modelViewerReady = true;
+          checkAllLoaded();
+          return;
+        }
+
+        // Check if already loaded
+        if (modelViewer.loaded) {
+          console.log("Model already loaded");
+          modelViewerReady = true;
+          checkAllLoaded();
+          return;
+        }
+
+        // Listen for load event
+        modelViewer.addEventListener("load", () => {
+          console.log("3D Model loaded successfully");
+          modelViewerReady = true;
+          checkAllLoaded();
+        });
+
+        // Listen for error
+        modelViewer.addEventListener("error", (e) => {
+          console.error("Model loading error:", e);
+          modelViewerReady = true; // Mark as ready anyway to not block the site
+          checkAllLoaded();
+        });
+
+        // Progress tracking (optional - for loading bar)
+        modelViewer.addEventListener("progress", (e) => {
+          const progress = e.detail.totalProgress * 100;
+          console.log(`Model loading: ${progress.toFixed(0)}%`);
+          // You could update a loading bar here
+        });
+      }
+
+      // --- THREE.JS SCENE SETUP ---
+      let scene, camera, renderer, particles, torus;
+      let mouseX = 0,
         mouseY = 0;
-    }, { passive: true });
-}
 
-// --- RESPONSIVE ---
-window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-});
+      // Background (particles) rotation state
+      let bgBaseRotX = 0;
+      let bgBaseRotY = 0;
+      let bgMouseRotX = 0;
+      let bgMouseRotY = 0;
 
-// --- GSAP ANIMATIONS ---
-gsap.registerPlugin(ScrollTrigger);
+      // Torus rotation state
+      let torusBaseRotX = 0;
+      let torusBaseRotY = 0;
+      let torusMouseRotX = 0;
+      let torusMouseRotY = 0;
 
-// Hero Reveal
-gsap.from('.reveal', {
-    opacity: 0,
-    y: 100,
-    duration: 1.5,
-    ease: "power4.out",
-    stagger: 0.2
-});
+      // Smooth camera scrolling
+      let targetCameraZ = 5;
+      let currentCameraZ = 5;
+      let currentScrollY = 0;
+      let targetScrollY = 0;
 
-// Scroll Reveal for sections
-gsap.utils.toArray('.glass:not(#home .glass)').forEach(card => {
-    gsap.from(card, {
-        scrollTrigger: {
+      // Detect mobile
+      const isMobile =
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+          navigator.userAgent,
+        ) || window.innerWidth < 768;
+
+      function initThree() {
+        scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera(
+          75,
+          window.innerWidth / window.innerHeight,
+          0.1,
+          1000,
+        );
+        camera.position.z = 5;
+
+        renderer = new THREE.WebGLRenderer({
+          antialias: !isMobile,
+          alpha: true,
+        });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(
+          isMobile
+            ? Math.min(window.devicePixelRatio, 1.5)
+            : Math.min(window.devicePixelRatio, 2),
+        );
+        document
+          .getElementById("canvas-container")
+          .appendChild(renderer.domElement);
+
+        // Create Sparkles (Particles)
+        const particlesGeometry = new THREE.BufferGeometry();
+        const count = isMobile ? 1500 : 3000;
+        const posArray = new Float32Array(count * 3);
+
+        for (let i = 0; i < count * 3; i++) {
+          posArray[i] = (Math.random() - 0.5) * 15;
+        }
+
+        particlesGeometry.setAttribute(
+          "position",
+          new THREE.BufferAttribute(posArray, 3),
+        );
+
+        const particlesMaterial = new THREE.PointsMaterial({
+          size: isMobile ? 0.008 : 0.005,
+          color: 0xffffff,
+          transparent: true,
+          opacity: 0.8,
+          blending: THREE.AdditiveBlending,
+        });
+
+        particles = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particles);
+
+        // Create Central Object
+        const segments = isMobile ? 80 : 150;
+        const geometry = new THREE.TorusKnotGeometry(1.3, 0.4, segments, 20);
+        const material = new THREE.MeshStandardMaterial({
+          color: 0x222222,
+          roughness: 0.1,
+          metalness: 1,
+          wireframe: true,
+        });
+        torus = new THREE.Mesh(geometry, material);
+        scene.add(torus);
+
+        // Lights
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+
+        const pointLight = new THREE.PointLight(0x0066ff, 2);
+        pointLight.position.set(2, 3, 4);
+        scene.add(pointLight);
+
+        const pointLight2 = new THREE.PointLight(0xff0066, 2);
+        pointLight2.position.set(-2, -3, 4);
+        scene.add(pointLight2);
+
+        animate();
+
+        // Mark Three.js as ready
+        console.log("Three.js scene ready");
+        threeJsReady = true;
+        checkAllLoaded();
+      }
+
+      function animate() {
+        requestAnimationFrame(animate);
+
+        // === PARTICLES (Background) ===
+        bgBaseRotY += 0.001;
+        bgBaseRotX += 0.0005;
+
+        const targetBgY = mouseX * 0.25;
+        const targetBgX = -mouseY * 0.18;
+        bgMouseRotY += (targetBgY - bgMouseRotY) * 0.06;
+        bgMouseRotX += (targetBgX - bgMouseRotX) * 0.06;
+
+        if (particles) {
+          particles.rotation.y = bgBaseRotY + bgMouseRotY;
+          particles.rotation.x = bgBaseRotX + bgMouseRotX;
+        }
+
+        // === TORUS (Central Object) ===
+        if (torus) {
+          torusBaseRotX += 0.005;
+          torusBaseRotY += 0.005;
+
+          const targetMouseRotX = mouseY * 0.5;
+          const targetMouseRotY = mouseX * 0.5;
+
+          torusMouseRotX += (targetMouseRotX - torusMouseRotX) * 0.08;
+          torusMouseRotY += (targetMouseRotY - torusMouseRotY) * 0.08;
+
+          torus.rotation.x = torusBaseRotX + torusMouseRotX;
+          torus.rotation.y = torusBaseRotY + torusMouseRotY;
+        }
+
+        // === CAMERA SCROLL - SMOOTH ===
+        currentScrollY += (targetScrollY - currentScrollY) * 0.08;
+        targetCameraZ = 5 + currentScrollY * 0.001;
+        currentCameraZ += (targetCameraZ - currentCameraZ) * 0.05;
+        camera.position.z = currentCameraZ;
+
+        renderer.render(scene, camera);
+      }
+
+      // --- SCROLL TRACKING ---
+      window.addEventListener(
+        "scroll",
+        () => {
+          targetScrollY = window.scrollY;
+        },
+        { passive: true },
+      );
+
+      // --- MOUSE TRACKING (Desktop only) ---
+      window.addEventListener("mousemove", (e) => {
+        mouseX = e.clientX / window.innerWidth - 0.5;
+        mouseY = e.clientY / window.innerHeight - 0.5;
+
+        gsap.to("#cursor", {
+          x: e.clientX - 10,
+          y: e.clientY - 10,
+          duration: 0.2,
+        });
+      });
+
+      // --- TOUCH TRACKING (Mobile) ---
+      if (isMobile) {
+        window.addEventListener(
+          "touchmove",
+          (e) => {
+            if (e.touches.length > 0) {
+              mouseX = e.touches[0].clientX / window.innerWidth - 0.5;
+              mouseY = e.touches[0].clientY / window.innerHeight - 0.5;
+            }
+          },
+          { passive: true },
+        );
+
+        window.addEventListener(
+          "touchend",
+          () => {
+            mouseX = 0;
+            mouseY = 0;
+          },
+          { passive: true },
+        );
+      }
+
+      // --- RESPONSIVE ---
+      window.addEventListener("resize", () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+
+      // --- GSAP ANIMATIONS ---
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Hero Reveal
+      gsap.from(".reveal", {
+        opacity: 0,
+        y: 100,
+        duration: 1.5,
+        ease: "power4.out",
+        stagger: 0.2,
+      });
+
+      // Scroll Reveal for sections
+      gsap.utils.toArray(".glass:not(#home .glass)").forEach((card) => {
+        gsap.from(card, {
+          scrollTrigger: {
             trigger: card,
             start: "top bottom-=100px",
-            toggleActions: "play none none reverse"
+            toggleActions: "play none none reverse",
+          },
+          opacity: 0,
+          y: 50,
+          duration: 1,
+          ease: "power3.out",
+        });
+      });
+
+      // Award banner animation
+      gsap.from(".award-banner", {
+        scrollTrigger: {
+          trigger: ".award-banner",
+          start: "top bottom-=50px",
+          toggleActions: "play none none reverse",
         },
         opacity: 0,
-        y: 50,
-        duration: 1,
-        ease: "power3.out"
-    });
-});
+        scale: 0.95,
+        duration: 0.2,
+        ease: "power3.out",
+      });
 
-// Award banner animation
-gsap.from('.award-banner', {
-    scrollTrigger: {
-        trigger: '.award-banner',
-        start: "top bottom-=50px",
-        toggleActions: "play none none reverse"
-    },
-    opacity: 0,
-    scale: 0.95,
-    duration: 0.2,
-    ease: "power3.out"
-});
-
-// Skill bar animations
-gsap.utils.toArray('.skill-progress').forEach(bar => {
-    gsap.from(bar, {
-        scrollTrigger: {
+      // Skill bar animations
+      gsap.utils.toArray(".skill-progress").forEach((bar) => {
+        gsap.from(bar, {
+          scrollTrigger: {
             trigger: bar,
             start: "top bottom-=50px",
-            toggleActions: "play none none reverse"
-        },
-        scaleX: 0,
-        duration: 1.5,
-        ease: "power3.out"
-    });
-});
+            toggleActions: "play none none reverse",
+          },
+          scaleX: 0,
+          duration: 1.5,
+          ease: "power3.out",
+        });
+      });
 
-// Section titles animation
-gsap.utils.toArray('.text-gradient').forEach(title => {
-    gsap.from(title, {
-        scrollTrigger: {
+      // Section titles animation
+      gsap.utils.toArray(".text-gradient").forEach((title) => {
+        gsap.from(title, {
+          scrollTrigger: {
             trigger: title,
             start: "top bottom-=100px",
-            toggleActions: "play none none reverse"
-        },
-        opacity: 0,
-        x: -50,
-        duration: 1,
-        ease: "power3.out"
-    });
-});
+            toggleActions: "play none none reverse",
+          },
+          opacity: 0,
+          x: -50,
+          duration: 1,
+          ease: "power3.out",
+        });
+      });
 
-// --- INITIALIZATION ---
-window.onload = () => {
-    initThree();
-    initModelViewer();
-};
+      // --- INITIALIZATION ---
+      window.onload = () => {
+        initThree();
+        initModelViewer();
+      };
 
-// Cursor scaling on links - only for non-touch devices
-if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
-    document.querySelectorAll('a, button, .group, .service-card, input, textarea, select').forEach(el => {
-        el.addEventListener('mouseenter', () => gsap.to('#cursor', { scale: 3, backgroundColor: 'rgba(255,255,255,0.1)' }));
-        el.addEventListener('mouseleave', () => gsap.to('#cursor', { scale: 1, backgroundColor: 'transparent' }));
-    });
-}
-</script>
-</body>
+      // Cursor scaling on links - only for non-touch devices
+      if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+        document
+          .querySelectorAll(
+            "a, button, .group, .service-card, input, textarea, select",
+          )
+          .forEach((el) => {
+            el.addEventListener("mouseenter", () =>
+              gsap.to("#cursor", {
+                scale: 3,
+                backgroundColor: "rgba(255,255,255,0.1)",
+              }),
+            );
+            el.addEventListener("mouseleave", () =>
+              gsap.to("#cursor", { scale: 1, backgroundColor: "transparent" }),
+            );
+          });
+      }
+    </script>
+  </body>
 </html>
