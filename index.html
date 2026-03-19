@@ -361,13 +361,11 @@
     <link rel="preconnect" href="https://ajax.googleapis.com" crossorigin />
     <link rel="preconnect" href="https://blogger.googleusercontent.com" crossorigin />
     <link rel="preconnect" href="https://play-lh.googleusercontent.com" crossorigin />
-    <link rel="preconnect" href="https://unpkg.com" crossorigin />
 
     <!-- DNS Prefetch -->
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
     <link rel="dns-prefetch" href="https://raw.githubusercontent.com" />
-    <link rel="dns-prefetch" href="https://unpkg.com" />
 
     <!-- Preload critical resources -->
     <link rel="preload" href="style.css" as="style" />
@@ -377,21 +375,11 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="style.css" />
 
-    <!--
-      THREE.JS — Use ES Module build via importmap.
-      The old CDN single-file build (three.min.js) was removed in r160.
-      We load Three.js as a global via an IIFE wrapper so the rest of
-      the non-module script.js can use `THREE.*` as before.
-    -->
-    <script>
-      // Create a global THREE namespace before script.js runs
-      window.THREE = window.THREE || {};
-    </script>
+    <!-- Deferred scripts for performance -->
     <script
-      src="https://unpkg.com/three@0.160.0/build/three.min.js"
+      src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"
       defer
     ></script>
-
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
       defer
@@ -1674,7 +1662,7 @@
           href="mailto:com.akshaycp@gmail.com"
           class="hover:text-gray-400 transition-colors mx-3"
           aria-label="Send an email to Akshay CP"
-        >
+        >git 
           Email
         </a>
       </nav>
