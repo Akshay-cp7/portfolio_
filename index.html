@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
+    <!-- Cache Control Meta Tags -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
     <!-- Primary SEO Meta Tags -->
     <title>Akshay CP | Flutter Developer & AR/VR Specialist | Portfolio</title>
     <meta
@@ -367,13 +372,13 @@
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
     <link rel="dns-prefetch" href="https://raw.githubusercontent.com" />
 
-    <!-- Preload critical resources -->
-    <link rel="preload" href="style.css" as="style" />
-    <link rel="preload" href="script.js" as="script" />
+    <!-- Preload critical resources with cache busting -->
+    <link rel="preload" href="style.css?v=20250129" as="style" />
+    <link rel="preload" href="script.js?v=20250129" as="script" />
 
-    <!-- Stylesheets -->
+    <!-- Stylesheets with cache busting -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css?v=20250129" />
 
     <!-- Deferred scripts for performance -->
     <script
@@ -1662,7 +1667,7 @@
           href="mailto:com.akshaycp@gmail.com"
           class="hover:text-gray-400 transition-colors mx-3"
           aria-label="Send an email to Akshay CP"
-        >git 
+        >
           Email
         </a>
       </nav>
@@ -1671,7 +1676,7 @@
       </p>
     </footer>
 
-    <!-- Main Script - Deferred -->
-    <script src="script.js" defer></script>
+    <!-- Main Script with cache busting -->
+    <script src="script.js?v=20250129" defer></script>
   </body>
 </html>

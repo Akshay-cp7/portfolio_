@@ -278,17 +278,17 @@
         });
       });
 
-      gsap.from(".award-banner", {
-        scrollTrigger: {
-          trigger: ".award-banner",
-          start: "top bottom-=50px",
-          toggleActions: "play none none reverse",
-        },
-        opacity: 0,
-        scale: 0.95,
-        duration: 0.2,
-        ease: "power3.out",
-      });
+      // gsap.from(".award-banner", {
+      //   scrollTrigger: {
+      //     trigger: ".award-banner",
+      //     start: "top bottom-=50px",
+      //     toggleActions: "play none none reverse",
+      //   },
+      //   opacity: 0,
+      //   scale: 0.95,
+      //   duration: 0.2,
+      //   ease: "power3.out",
+      // });
 
       gsap.utils.toArray(".skill-progress").forEach((bar) => {
         gsap.from(bar, {
